@@ -11,12 +11,11 @@ class EditorWindow:
     _aborted = False
 
     _stdscr = None
-    win = None
-    window_padding = 0
-    window_height = 0
-    window_width = 0
-    entry_height = 0
-    win = False
+    _win = None
+    _window_padding = 0
+    _window_height = 0
+    _window_width = 0
+    _win = False
 
     def __init__(self, filepath):
         #Create bar
@@ -25,6 +24,7 @@ class EditorWindow:
     
         #Create text editor
         self._textEditor = TextEditor(filepath)
+
 
         #Setup curses stuff
         self.cursesStart()
@@ -37,22 +37,22 @@ class EditorWindow:
         curses.noecho()
         curses.cbreak()
         self.resizeWindow()
-        self.win = curses.newwin(
-            self.window_height - self.window_padding * 2,
-            self.window_width - self.window_padding * 2,
-            self.window_padding,
-            self.window_padding
+        self._win = curses.newwin(
+            self._window_height - self._window_padding * 2,
+            self._window_width - self._window_padding * 2,
+            self._window_padding,
+            self._window_padding
         )
     
     def resizeWindow(self):
-        self.window_height, self.window_width = self._stdscr.getmaxyx()
-        if self.win != False:
-            self.entry_height = self.window_height - self.window_padding * 2
-            self.win.resize(
-                self.window_height - self.window_padding * 2,
-                self.window_width - self.window_padding * 2,
+        self._window_height, self._window_width = self._stdscr.getmaxyx()
+        if self._win != False:
+            self.entry_height = self._window_height - self._window_padding * 2
+            self._win.resize(
+                self._window_height - self._window_padding * 2,
+                self._window_width - self._window_padding * 2,
             )
-            self.win.clear()
+            self._win.clear()
             self.redrawWindow()
             curses.doupdate()
     
@@ -64,12 +64,16 @@ class EditorWindow:
 
     def setText(self, x, y, label):
         try:
-            self.win.addstr(y, x, label)
+            self._win.addstr(y, x, label)
         except:
             pass
 
+    def moveCursor(self, x, y):
+            self._win.move(y,x) 
+            curses.setsyx(y,x)
+
     def redrawWindow(self):
-        self.win.refresh()
+        self._win.refresh()
 
         #Render the editor
         yCounter = 0
@@ -79,13 +83,19 @@ class EditorWindow:
 
         #Show bottom text
         self._bar.setFilename(self._textEditor.getCurrentFilename())
-        self.setText(0, self.window_height - 1,
+        self.setText(0, self._window_height - 2,
                 self._bar.getContent())
+        
+        if self._inputMode == "Command":
+            self.moveCursor(0,self._window_height - 1)
+            self.setText(0,self._window_height - 1, "")
+        else:
+            self.moveCursor(9,0)
 
     def cursesLoop(self, stdscr):
         while 1:
             #Resize if needed
-            resize = curses.is_term_resized(self.window_width, self.window_height)
+            resize = curses.is_term_resized(self._window_width, self._window_height)
             if resize == True:
                 self.resizeWindow()
                
@@ -110,7 +120,12 @@ class EditorWindow:
             #Pressing - allows the user to go to a different mode
             if c == ord('-'):
                 self.setInputMode("Normal")
-           
+            
+            if self._inputMode == "Command":
+                curses.echo()
+                self._stdscr.getstr()
+                curses.noecho()
+
             if self._inputMode == "Normal":
                 if c == ord('q') or c == ord('Q'):
                     self._aborted = True
@@ -118,6 +133,8 @@ class EditorWindow:
                     self.setInputMode("Insert")
                 elif c == ord('r'):
                     self.setInputMode("Replace")
+                elif c == ord(':'):
+                    self.setInputMode("Command")
 
             elif self._inputMode == "Insert":
                 #Handle keybinding when in insert mode
