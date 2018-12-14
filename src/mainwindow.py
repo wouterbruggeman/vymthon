@@ -86,10 +86,10 @@ class MainWindow:
 
         #Render the bar
         self._bar.draw()
+        self._bar.setLineNumber(self._textEditor.getBufferCursorY())
 
         #TODO: is a refresh really needed?
         self._win.refresh()
-        #self._stdscr.refresh()
     
     def resizeWindow(self):
         self._window_height, self._window_width = self._stdscr.getmaxyx()
@@ -114,7 +114,8 @@ class MainWindow:
 
     def moveCursor(self, x, y):
             self._win.move(y,x) 
-            curses.setsyx(y,x)
+            self._win.refresh()
+            #curses.setsyx(y,x)
 
     def exit(self):
         self._aborted = True

@@ -48,4 +48,8 @@ class Buffer:
     def getContent(self):
         return self._buffer
 
-    #python property
+    def getLengthY(self):
+        return len(self._buffer)
+
+    def getLengthX(self, y):
+        return len(self._buffer[y])

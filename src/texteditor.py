@@ -4,8 +4,12 @@ from screenelement import *
 class TextEditor(ScreenElement):
     _inputMode = ""
     _buffer = Buffer
-    _cursorOnLine = 0
-    _cursorOnRow = 0
+
+    _cursorPosX = 0
+    _cursorPosY = 0
+
+    _offsetX = 4
+    _offsetY = 0
 
     def __init__(self, window, filepath):
         super().__init__(window)
@@ -24,7 +28,7 @@ class TextEditor(ScreenElement):
         content = []
         lineCounter = 0
         for line in self._buffer.getContent():
-            content.append(str(lineCounter) + "\t| " + line)
+            content.append(str(lineCounter) + " | " + line)
             lineCounter += 1
              
         return content 
@@ -42,3 +46,44 @@ class TextEditor(ScreenElement):
         for line in self.getContent():
             self._window.addText(0, yCounter, line)
             yCounter += 1
+
+
+    def cursorDown(self):
+        if self._cursorPosY < (self._buffer.getLengthY() - 1):
+            self._cursorPosY += 1
+            self.moveCursor(self._cursorPosX, self._cursorPosY)
+
+    def cursorUp(self):
+        if self._cursorPosY > 0:
+            self._cursorPosY -= 1
+            self.moveCursor(self._cursorPosX, self._cursorPosY)
+
+    def cursorLeft(self):
+        if self.getBufferCursorX() > 0:
+            self._cursorPosX -= 1
+            self.moveCursor(self._cursorPosX, self._cursorPosY)
+
+    def cursorRight(self):
+        if self.getBufferCursorX() < self._buffer.getLengthX(self.getBufferCursorY()):
+            self._cursorPosX += 1
+            self.moveCursor(self._cursorPosX, self._cursorPosY)
+
+    def moveCursor(self, x, y):
+        self._cursorPosX = x
+        self._cursorPosY = y
+        self.updateCursor()
+
+    def updateCursor(self):
+        self._window.moveCursor(self.getCursorX(), self.getCursorY())
+
+    def getCursorX(self):
+        return (self._cursorPosX + self._offsetX)
+
+    def getCursorY(self):
+        return (self._cursorPosY + self._offsetY)
+
+    def getBufferCursorX(self):
+        return self._cursorPosX
+
+    def getBufferCursorY(self):
+        return self._cursorPosY 
