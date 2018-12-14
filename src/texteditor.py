@@ -27,6 +27,12 @@ class TextEditor:
             lineCounter += 1
              
         return content 
-        
-    #def openFile(self, filename):
-        #self._buffer = Buffer(filename)
+
+    def saveBuffer(self):
+        #TODO: implement this feature
+        return "Written to file '" + self.getCurrentFilename() + "'."
+
+    def openFile(self, filename):
+        #TODO: implement multiple buffers
+        self._buffer = Buffer(filename)
+
