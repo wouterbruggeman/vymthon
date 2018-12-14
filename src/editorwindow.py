@@ -4,12 +4,10 @@ from bar import *
 from texteditor import *
 
 class EditorWindow:
-    _inputMode = "Normal"
     _bar = Bar
     _textEditor = TextEditor
 
     _aborted = False
-
     _stdscr = None
     _win = None
     _window_padding = 0
@@ -20,7 +18,7 @@ class EditorWindow:
     def __init__(self, filepath):
         #Create bar
         self._bar = Bar()
-        self._bar.setInputMode(self._inputMode)
+        self._bar.setInputMode("Normal")
     
         #Create text editor
         self._textEditor = TextEditor(filepath)
@@ -117,7 +115,6 @@ class EditorWindow:
                 break
     
     def setInputMode(self, inputMode):
-        self._inputMode = inputMode
         self._textEditor.setInputMode(inputMode)
         self._bar.setInputMode(inputMode);
 
@@ -137,14 +134,14 @@ class EditorWindow:
             if c == ord('-'):
                 self.setInputMode("Normal")
             
-            if self._inputMode == "Command":
+            if self._textEditor.getInputMode() == "Command":
                 #self._stdscr.getstr(self._bar.getPosition() + 1, 1)
                 cmd = self.getStringInput(1, self._bar.getPosition() + 1)
 
                 #TODO: interpret the command
                 #Change mode
                 self.setInputMode("Normal")
-            elif self._inputMode == "Normal":
+            elif self._textEditor.getInputMode() == "Normal":
                 if c == ord('q') or c == ord('Q'):
                     self._aborted = True
                 elif c == ord('i'):
@@ -154,10 +151,10 @@ class EditorWindow:
                 elif c == ord(':'):
                     self.setInputMode("Command")
 
-            elif self._inputMode == "Insert":
+            elif self._textEditor.getInputMode() == "Insert":
                 #Handle keybinding when in insert mode
                 empty = None
-            elif self._inputMode == "Replace":
+            elif self._textEditor.getInputMode() == "Replace":
                 #Handle keybinding when in replace mode 
                 empty = None
 

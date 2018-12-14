@@ -2,6 +2,7 @@ import curses
 from buffer import *
 
 class TextEditor:
+    _inputMode = ""
     _buffer = Buffer
     _cursorOnLine = 0
     _cursorOnRow = 0
