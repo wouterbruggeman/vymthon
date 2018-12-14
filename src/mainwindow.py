@@ -3,7 +3,7 @@ from bar import *
 from texteditor import *
 from inputhandler import *
 
-class EditorWindow:
+class MainWindow:
     _bar = Bar
     _textEditor = TextEditor
     _inputHandler = InputHandler

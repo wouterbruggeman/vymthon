@@ -1,4 +1,4 @@
-from editorwindow import *
+from mainwindow import *
 from texteditor import *
 from bar import *
 

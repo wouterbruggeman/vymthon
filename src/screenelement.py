@@ -1,4 +1,4 @@
-from editorwindow import *
+from mainwindow import *
 
 class ScreenElement:
     _window = None

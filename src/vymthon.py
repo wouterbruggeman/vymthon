@@ -1,15 +1,13 @@
 #!/usr/bin/python3
 
 import sys
-from buffer import *
-from editorwindow import *
+from mainwindow import *
 
 argCount = len(sys.argv)
-editorwindow = None
-buffer = None
+mainwindow = MainWindow
 
 if argCount != 2:
     print("Please provide a filename: 'vymthon filename.ext'")
 elif argCount == 2:
     filepath = str(sys.argv[1])
-    editorwindow = EditorWindow(filepath)
+    mainwindow = mainwindow(filepath)
