@@ -11,6 +11,8 @@ class TextEditor(ScreenElement):
     _offsetX = 4
     _offsetY = 0
 
+    _height = 0
+
     def __init__(self, window, filepath):
         super().__init__(window)
         self._buffer = Buffer(filepath)
@@ -20,18 +22,12 @@ class TextEditor(ScreenElement):
 
     def setInputMode(self, inputMode):
         self._inputMode = inputMode
+    
+    def setHeight(self, height):
+        self._height = height
 
     def getInputMode(self):
         return self._inputMode
-
-    def getContent(self):
-        content = []
-        lineCounter = 0
-        for line in self._buffer.getContent():
-            content.append(str(lineCounter) + " | " + line)
-            lineCounter += 1
-             
-        return content 
 
     def saveBuffer(self):
         #TODO: implement this feature
@@ -43,9 +39,17 @@ class TextEditor(ScreenElement):
 
     def draw(self):
         yCounter = 0
-        for line in self.getContent():
-            self._window.addText(0, yCounter, line)
-            yCounter += 1
+        for line in self._buffer.getContent():
+            
+            #Make sure we dont draw over other screen elements
+            if yCounter < self._height:
+                #Draw the lines
+                line = str(yCounter) + " | " + line
+                self._window.addText(0, yCounter, line)
+                yCounter += 1
+
+    def getLineNumberWidth(self, y):
+         return len(str(y))
 
 
     def cursorDown(self):

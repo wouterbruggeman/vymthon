@@ -56,6 +56,9 @@ class MainWindow:
         
         #Place bar at some position
         self._bar.setPosition(self._window_height - 2)
+
+        #Give the text editor some space
+        self._textEditor.setHeight(self._bar.getPosition())
     
     def cursesStop(self):
         #Stop curses
@@ -101,6 +104,11 @@ class MainWindow:
                 self._window_height - self._window_padding * 2,
                 self._window_width - self._window_padding * 2,
             )
+            #Update the bar size
+            self._bar.setPosition(self._window_height - 2)
+            #Update the editor height
+            self._textEditor.setHeight(self._bar.getPosition())
+
             self._win.clear()
             self.redrawWindow()
             curses.doupdate()
