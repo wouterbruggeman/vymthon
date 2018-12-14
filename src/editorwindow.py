@@ -17,19 +17,23 @@ class EditorWindow:
     _win = False
 
     def __init__(self, filepath):
-        #Create bar
-        self._bar = Bar(self)
-        self._bar.setInputMode("Normal")
-    
         #Create text editor
         self._textEditor = TextEditor(self, filepath)
-        self._textEditor.setInputMode("Normal")
+
+        #Create bar
+        self._bar = Bar(self)
 
         #Create command interpreter
         self._commandInterpreter = CommandInterpreter(self._bar, self._textEditor, self)
 
-        #Setup curses stuff
+        #Start curses
         self.cursesStart()
+
+        #Setup other objects
+        self.setInputMode("Normal")
+        self._bar.setFilename(self._textEditor.getCurrentFilename())
+    
+        #Loop curses
         curses.wrapper(self.cursesLoop)
         self.cursesStop()
     
@@ -41,9 +45,6 @@ class EditorWindow:
         curses.cbreak()
         self._stdscr.keypad(1)
         curses.noecho()
-
-        self._stdscr.addstr(0,10,"Hit 'q' to quit")
-        self._stdscr.refresh()
 
         #Create the window
         self.resizeWindow()
@@ -79,6 +80,17 @@ class EditorWindow:
 
             if self._aborted:
                 break
+            
+    def redrawWindow(self):
+        #Render the editor
+        self._textEditor.draw()
+
+        #Render the bar
+        self._bar.draw()
+
+        #TODO: is a refresh really needed?
+        self._win.refresh()
+        #self._stdscr.refresh()
     
     def resizeWindow(self):
         self._window_height, self._window_width = self._stdscr.getmaxyx()
@@ -98,7 +110,6 @@ class EditorWindow:
         #Set some text at the given position
         try:
             self._win.addstr(y, x, label)
-            self._stdscr.refresh()
         except:
             pass
 
@@ -109,17 +120,6 @@ class EditorWindow:
     def exit(self):
         self._aborted = True
 
-    def redrawWindow(self):
-        #Render the editor
-        self._textEditor.draw()
-
-        #Render the bar
-        self._bar.setFilename(self._textEditor.getCurrentFilename())
-        self._bar.draw()
-
-        #TODO: is a refresh really needed?
-        self._win.refresh()
-        
     def setInputMode(self, inputMode):
         self._textEditor.setInputMode(inputMode)
         self._bar.setInputMode(inputMode);
@@ -131,7 +131,6 @@ class EditorWindow:
             self._bar.setStatusMessage("");
 
         #TODO: REMOVE LINE BELOW
-        #self.redrawWindow()
         self.redrawWindow()
     
     def handleKeyPress(self):
@@ -145,10 +144,8 @@ class EditorWindow:
                 self.setInputMode("Normal")
             elif c == ord('i'):
                 self.setInputMode("Insert")
-                self.moveCursor(9,0);
             elif c == ord('r'):
                 self.setInputMode("Replace")
-                self.moveCursor(9,0);
             elif c == ord(':'):
                 self.setInputMode("Command")
 
