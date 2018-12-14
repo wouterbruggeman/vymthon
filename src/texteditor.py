@@ -31,7 +31,7 @@ class TextEditor(ScreenElement):
 
     def saveBuffer(self):
         #TODO: implement this feature
-        return "Written to file '" + self.getCurrentFilename() + "'."
+        return "Written to file: " + self.getCurrentFilename()
 
     def openFile(self, filename):
         #TODO: implement multiple buffers

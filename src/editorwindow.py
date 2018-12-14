@@ -127,33 +127,36 @@ class EditorWindow:
         if inputMode == "Command":
             self._bar.setStatusMessage(":");
 
-        elif inputMode == "Normal":
-            self._bar.setStatusMessage("");
-
-        #TODO: REMOVE LINE BELOW
-        self.redrawWindow()
-    
     def handleKeyPress(self):
-            inputMode = self._textEditor.getInputMode()
+        inputMode = self._textEditor.getInputMode()
 
+        #Check for normal input
+        if inputMode == "Normal":
             #Get char from input
             c = self._stdscr.getch()
 
             #Pressing - allows the user to go to a different mode
-            if c == ord('-'):
-                self.setInputMode("Normal")
-            elif c == ord('i'):
+            if c == ord('i'):
                 self.setInputMode("Insert")
             elif c == ord('r'):
                 self.setInputMode("Replace")
             elif c == ord(':'):
                 self.setInputMode("Command")
-
-                cmd = self.getStringInput(1, self._bar.getPosition() + 1)
-                self._commandInterpreter.interpret(cmd)
-
-                #Change mode
-                self.setInputMode("Normal")
+            else:
+                #Dont update the screen or check for other input modes
+                #if no (useful) key was pressed
+                return
+        
+        #Redraw the window
+        self.redrawWindow()
+    
+        #Check for command input
+        if inputMode == "Command":
+            cmd = self.getStringInput(1, self._bar.getPosition() + 1)
+            self._commandInterpreter.interpret(cmd)
+        
+            #Return to normal
+            self.setInputMode("Normal")
 
     def getStringInput(self, x, y):
         curses.echo()

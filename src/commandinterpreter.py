@@ -16,9 +16,8 @@ class CommandInterpreter:
         if command == "q":
             self._window.exit()
         elif command == "w":
-            #self._bar.setStatusMessage(self._textEditor.saveBuffer())
-            self._bar.setStatusMessage("Hello world")
-            self._window.addText(16, 10, "Hello there")
+            self._bar.setStatusMessage(self._textEditor.saveBuffer())
+            #self._bar.setStatusMessage("Hello world")
         elif command == "wq":
             self._textEditor.saveBuffer()
             self._window.exit();
