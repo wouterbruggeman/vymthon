@@ -18,11 +18,11 @@ class EditorWindow:
 
     def __init__(self, filepath):
         #Create bar
-        self._bar = Bar()
+        self._bar = Bar(self)
         self._bar.setInputMode("Normal")
     
         #Create text editor
-        self._textEditor = TextEditor(filepath)
+        self._textEditor = TextEditor(self, filepath)
         self._textEditor.setInputMode("Normal")
 
         #Create command interpreter
@@ -111,15 +111,11 @@ class EditorWindow:
 
     def redrawWindow(self):
         #Render the editor
-        yCounter = 0
-        for line in self._textEditor.getContent():
-            self.addText(0, yCounter, line)
-            yCounter += 1
+        self._textEditor.draw()
 
         #Render the bar
         self._bar.setFilename(self._textEditor.getCurrentFilename())
-        self.addText(0, self._bar.getPosition(),
-                self._bar.getContent())
+        self._bar.draw()
 
         #TODO: is a refresh really needed?
         self._win.refresh()

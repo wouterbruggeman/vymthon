@@ -1,13 +1,14 @@
-import curses
 from buffer import *
+from screenelement import *
 
-class TextEditor:
+class TextEditor(ScreenElement):
     _inputMode = ""
     _buffer = Buffer
     _cursorOnLine = 0
     _cursorOnRow = 0
 
-    def __init__(self, filepath):
+    def __init__(self, window, filepath):
+        super().__init__(window)
         self._buffer = Buffer(filepath)
 
     def getCurrentFilename(self):
@@ -36,3 +37,8 @@ class TextEditor:
         #TODO: implement multiple buffers
         self._buffer = Buffer(filename)
 
+    def draw(self):
+        yCounter = 0
+        for line in self.getContent():
+            self._window.addText(0, yCounter, line)
+            yCounter += 1

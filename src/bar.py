@@ -1,10 +1,15 @@
-class Bar:
+from screenelement import *
+
+class Bar(ScreenElement):
     _filename = ""
     _inputMode = ""
     _lineNumber = 0
     _statusMessage = ""
 
     _position = 0
+
+    def __init__(self, window):
+        super().__init__(window)
 
     def setFilename(self, filename):
         self._filename = filename
@@ -31,3 +36,6 @@ class Bar:
         string += "\n"
         string += self._statusMessage
         return string
+    
+    def draw(self):
+        self._window.addText(0, self.getPosition(), self.getContent())
