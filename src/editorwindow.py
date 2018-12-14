@@ -25,17 +25,21 @@ class EditorWindow:
         #Create text editor
         self._textEditor = TextEditor(filepath)
 
-
         #Setup curses stuff
         self.cursesStart()
         curses.wrapper(self.cursesLoop)
         self.cursesStop()
     
     def cursesStart(self):
+        #Init curses
         self._stdscr = curses.initscr()
+
+        #Curses settings
         self._stdscr.keypad(1)
         curses.noecho()
         curses.cbreak()
+
+        #Create the window
         self.resizeWindow()
         self._win = curses.newwin(
             self._window_height - self._window_padding * 2,
@@ -43,9 +47,14 @@ class EditorWindow:
             self._window_padding,
             self._window_padding
         )
+        
+        #Place bar at some position
+        self._bar.setPosition(self._window_height - 2)
     
     def resizeWindow(self):
         self._window_height, self._window_width = self._stdscr.getmaxyx()
+
+        #If the window was not initialized
         if self._win != False:
             self.entry_height = self._window_height - self._window_padding * 2
             self._win.resize(
@@ -57,12 +66,14 @@ class EditorWindow:
             curses.doupdate()
     
     def cursesStop(self):
+        #Stop curses
         curses.nocbreak()
         self._stdscr.keypad(0)
         curses.echo()
         curses.endwin()
 
     def setText(self, x, y, label):
+        #Set some text at the given position
         try:
             self._win.addstr(y, x, label)
         except:
@@ -73,6 +84,7 @@ class EditorWindow:
             curses.setsyx(y,x)
 
     def redrawWindow(self):
+        #TODO: is a refresh really needed?
         self._win.refresh()
 
         #Render the editor
@@ -81,26 +93,22 @@ class EditorWindow:
             self.setText(0, yCounter, line)
             yCounter += 1
 
-        #Show bottom text
+        #Render the bar
         self._bar.setFilename(self._textEditor.getCurrentFilename())
-        self.setText(0, self._window_height - 2,
+        self.setText(0, self._bar.getPosition(),
                 self._bar.getContent())
-        
-        if self._inputMode == "Command":
-            self.moveCursor(0,self._window_height - 1)
-            self.setText(0,self._window_height - 1, "")
-        else:
-            self.moveCursor(9,0)
 
+
+        
     def cursesLoop(self, stdscr):
         while 1:
             #Resize if needed
             resize = curses.is_term_resized(self._window_width, self._window_height)
             if resize == True:
                 self.resizeWindow()
-               
-            #Redraw after everything
-            self.redrawWindow()
+
+            #Refresh the window 
+            self._win.refresh()
 
             #Handle keypresses
             self.handleKeyPress()
@@ -113,6 +121,14 @@ class EditorWindow:
         self._textEditor.setInputMode(inputMode)
         self._bar.setInputMode(inputMode);
 
+        if inputMode == "Command":
+            self._bar.setStatusMessage(":");
+
+        elif inputMode == "Normal":
+            self._bar.setStatusMessage("");
+
+        self.redrawWindow()
+
     def handleKeyPress(self):
             #Get char from input
             c = self._stdscr.getch()
@@ -122,11 +138,13 @@ class EditorWindow:
                 self.setInputMode("Normal")
             
             if self._inputMode == "Command":
-                curses.echo()
-                self._stdscr.getstr()
-                curses.noecho()
+                #self._stdscr.getstr(self._bar.getPosition() + 1, 1)
+                cmd = self.getStringInput(1, self._bar.getPosition() + 1)
 
-            if self._inputMode == "Normal":
+                #TODO: interpret the command
+                #Change mode
+                self.setInputMode("Normal")
+            elif self._inputMode == "Normal":
                 if c == ord('q') or c == ord('Q'):
                     self._aborted = True
                 elif c == ord('i'):
@@ -142,3 +160,10 @@ class EditorWindow:
             elif self._inputMode == "Replace":
                 #Handle keybinding when in replace mode 
                 empty = None
+
+    def getStringInput(self, x, y):
+        curses.echo()
+        cmd = str(self._stdscr.getstr(y, x))
+        curses.noecho()
+        return cmd
+

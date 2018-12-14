@@ -4,6 +4,8 @@ class Bar:
     _lineNumber = 0
     _statusMessage = ""
 
+    _position = 0
+
     def setFilename(self, filename):
         self._filename = filename
     
@@ -15,6 +17,12 @@ class Bar:
 
     def setStatusMessage(self, message):
         self._statusMessage = message
+
+    def setPosition(self, y):
+        self._position = y
+
+    def getPosition(self):
+        return self._position
 
     def getContent(self):
         string = "[" + self._inputMode + "]"
