@@ -16,6 +16,9 @@ class Bar(ScreenElement):
     
     def setInputMode(self, inputMode):
         self._inputMode = inputMode
+
+        if inputMode == "Command":
+            self.setStatusMessage(":");
     
     def setLineNumber(self, lineNumber):
         self._lineNumber = lineNumber;

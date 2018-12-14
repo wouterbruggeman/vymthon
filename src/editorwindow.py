@@ -1,12 +1,12 @@
 import curses
 from bar import *
 from texteditor import *
-from commandinterpreter import *
+from inputhandler import *
 
 class EditorWindow:
     _bar = Bar
     _textEditor = TextEditor
-    _commandInterpreter = CommandInterpreter
+    _inputHandler = InputHandler
 
     _aborted = False
     _stdscr = None
@@ -23,14 +23,13 @@ class EditorWindow:
         #Create bar
         self._bar = Bar(self)
 
-        #Create command interpreter
-        self._commandInterpreter = CommandInterpreter(self._bar, self._textEditor, self)
+        #Create input handler
+        self._inputHandler = InputHandler(self._bar, self._textEditor, self)
 
         #Start curses
         self.cursesStart()
 
         #Setup other objects
-        self.setInputMode("Normal")
         self._bar.setFilename(self._textEditor.getCurrentFilename())
     
         #Loop curses
@@ -76,7 +75,7 @@ class EditorWindow:
             self.redrawWindow()
 
             #Handle keypresses
-            self.handleKeyPress()
+            self._inputHandler.handleKeyPress();
 
             if self._aborted:
                 break
@@ -120,46 +119,3 @@ class EditorWindow:
     def exit(self):
         self._aborted = True
 
-    def setInputMode(self, inputMode):
-        self._textEditor.setInputMode(inputMode)
-        self._bar.setInputMode(inputMode);
-
-        if inputMode == "Command":
-            self._bar.setStatusMessage(":");
-
-    def handleKeyPress(self):
-        inputMode = self._textEditor.getInputMode()
-
-        #Check for normal input
-        if inputMode == "Normal":
-            #Get char from input
-            c = self._stdscr.getch()
-
-            #Pressing - allows the user to go to a different mode
-            if c == ord('i'):
-                self.setInputMode("Insert")
-            elif c == ord('r'):
-                self.setInputMode("Replace")
-            elif c == ord(':'):
-                self.setInputMode("Command")
-            else:
-                #Dont update the screen or check for other input modes
-                #if no (useful) key was pressed
-                return
-        
-        #Redraw the window
-        self.redrawWindow()
-    
-        #Check for command input
-        if inputMode == "Command":
-            cmd = self.getStringInput(1, self._bar.getPosition() + 1)
-            self._commandInterpreter.interpret(cmd)
-        
-            #Return to normal
-            self.setInputMode("Normal")
-
-    def getStringInput(self, x, y):
-        curses.echo()
-        cmd = self._win.getstr(y, x).decode("utf-8")
-        curses.noecho()
-        return cmd
