@@ -11,7 +11,7 @@ class TextEditor(ScreenElement):
     _offsetX = 4
     _offsetY = 0
 
-    _height = 0
+    _drawHeight = 0
 
     def __init__(self, window, filepath):
         super().__init__(window)
@@ -24,7 +24,7 @@ class TextEditor(ScreenElement):
         self._inputMode = inputMode
     
     def setHeight(self, height):
-        self._height = height
+        self._drawHeight = height
 
     def getInputMode(self):
         return self._inputMode
@@ -42,7 +42,7 @@ class TextEditor(ScreenElement):
         for line in self._buffer.getContent():
             
             #Make sure we dont draw over other screen elements
-            if yCounter < self._height:
+            if yCounter < self._drawHeight:
                 #Draw the lines
                 line = str(yCounter) + " | " + line
                 self._window.addText(0, yCounter, line)
@@ -51,26 +51,28 @@ class TextEditor(ScreenElement):
     def getLineNumberWidth(self, y):
          return len(str(y))
 
-
     def cursorDown(self):
-        if self._cursorPosY < (self._buffer.getLengthY() - 1):
-            self._cursorPosY += 1
-            self.moveCursor(self._cursorPosX, self._cursorPosY)
+        if self.getCursorY() < (self._buffer.getLengthY() - 1):
+            self.moveCursor(self.getCursorX(), self.getCursorY() + 1)
+
+        if self.getCursorX() > self._buffer.getLengthX(self.getCursorY()):
+            self.moveCursor(self._buffer.getLengthX(self.getCursorY()), self.getCursorY())
+
 
     def cursorUp(self):
-        if self._cursorPosY > 0:
-            self._cursorPosY -= 1
-            self.moveCursor(self._cursorPosX, self._cursorPosY)
+        if self.getCursorY() > 0:
+            self.moveCursor(self.getCursorX(), self.getCursorY() - 1)
+        
+        if self.getCursorX() > self._buffer.getLengthX(self.getCursorY()):
+            self.moveCursor(self._buffer.getLengthX(self.getCursorY()), self.getCursorY())
 
     def cursorLeft(self):
-        if self.getBufferCursorX() > 0:
-            self._cursorPosX -= 1
-            self.moveCursor(self._cursorPosX, self._cursorPosY)
+        if self.getCursorX() > 0:
+            self.moveCursor(self.getCursorX() - 1, self.getCursorY())
 
     def cursorRight(self):
-        if self.getBufferCursorX() < self._buffer.getLengthX(self.getBufferCursorY()):
-            self._cursorPosX += 1
-            self.moveCursor(self._cursorPosX, self._cursorPosY)
+        if self.getCursorX() < self._buffer.getLengthX(self.getCursorY()):
+            self.moveCursor(self.getCursorX() + 1, self.getCursorY())
 
     def moveCursor(self, x, y):
         self._cursorPosX = x
@@ -78,16 +80,13 @@ class TextEditor(ScreenElement):
         self.updateCursor()
 
     def updateCursor(self):
-        self._window.moveCursor(self.getCursorX(), self.getCursorY())
+        self._window.moveCursor(
+                self._cursorPosX + self._offsetX, 
+                self._cursorPosY + self._offsetY
+                )
 
     def getCursorX(self):
-        return (self._cursorPosX + self._offsetX)
-
-    def getCursorY(self):
-        return (self._cursorPosY + self._offsetY)
-
-    def getBufferCursorX(self):
         return self._cursorPosX
 
-    def getBufferCursorY(self):
+    def getCursorY(self):
         return self._cursorPosY 

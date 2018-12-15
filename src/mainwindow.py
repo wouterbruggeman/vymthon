@@ -89,7 +89,7 @@ class MainWindow:
 
         #Render the bar
         self._bar.draw()
-        self._bar.setLineNumber(self._textEditor.getBufferCursorY())
+        self._bar.setLineNumber(self._textEditor.getCursorY())
 
         #TODO: is a refresh really needed?
         self._win.refresh()
