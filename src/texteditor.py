@@ -1,21 +1,24 @@
 from buffer import *
 from screenelement import *
+from cursor import *
 
 class TextEditor(ScreenElement):
     _inputMode = ""
     _buffer = Buffer
-
-    _cursorPosX = 0
-    _cursorPosY = 0
-
-    _offsetX = 4
-    _offsetY = 0
+    _cursor = Cursor
 
     _drawHeight = 0
+    _offsetX = 0
 
     def __init__(self, window, filepath):
         super().__init__(window)
         self._buffer = Buffer(filepath)
+       
+        #Calculate offset
+        lineCount = len(self._buffer.getContent())
+        self._offsetX = self.getOffsetX(lineCount) + 1
+
+        self._cursor = Cursor(self._buffer, self._window, self._offsetX)
 
     def getCurrentFilename(self):
         return self._buffer.getFilename()
@@ -44,49 +47,18 @@ class TextEditor(ScreenElement):
             #Make sure we dont draw over other screen elements
             if yCounter < self._drawHeight:
                 #Draw the lines
-                line = str(yCounter) + " | " + line
-                self._window.addText(0, yCounter, line)
+                self.drawLineNumber(yCounter)
+                #line = str(yCounter) + " | " + line
+                self._window.addText(self._offsetX, yCounter, line)
                 yCounter += 1
 
-    def getLineNumberWidth(self, y):
+    def getOffsetX(self, y):
          return len(str(y))
-
-    def cursorDown(self):
-        if self.getCursorY() < (self._buffer.getLengthY() - 1):
-            self.moveCursor(self.getCursorX(), self.getCursorY() + 1)
-
-        if self.getCursorX() > self._buffer.getLengthX(self.getCursorY()):
-            self.moveCursor(self._buffer.getLengthX(self.getCursorY()), self.getCursorY())
+    
+    def drawLineNumber(self, y):
+        #Draw the number in color
+        self._window.addText(0, y, str(y), 3)
 
 
-    def cursorUp(self):
-        if self.getCursorY() > 0:
-            self.moveCursor(self.getCursorX(), self.getCursorY() - 1)
-        
-        if self.getCursorX() > self._buffer.getLengthX(self.getCursorY()):
-            self.moveCursor(self._buffer.getLengthX(self.getCursorY()), self.getCursorY())
-
-    def cursorLeft(self):
-        if self.getCursorX() > 0:
-            self.moveCursor(self.getCursorX() - 1, self.getCursorY())
-
-    def cursorRight(self):
-        if self.getCursorX() < self._buffer.getLengthX(self.getCursorY()):
-            self.moveCursor(self.getCursorX() + 1, self.getCursorY())
-
-    def moveCursor(self, x, y):
-        self._cursorPosX = x
-        self._cursorPosY = y
-        self.updateCursor()
-
-    def updateCursor(self):
-        self._window.moveCursor(
-                self._cursorPosX + self._offsetX, 
-                self._cursorPosY + self._offsetY
-                )
-
-    def getCursorX(self):
-        return self._cursorPosX
-
-    def getCursorY(self):
-        return self._cursorPosY 
+    def getCursor(self):
+        return self._cursor

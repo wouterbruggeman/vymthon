@@ -1,6 +1,7 @@
 from bar import *
 from texteditor import *
 from commandinterpreter import *
+from cursor import *
 
 class InputHandler:
     _inputMode = "Normal"
@@ -28,7 +29,10 @@ class InputHandler:
         return self._inputMode
 
     def handleKeyPress(self):
-        self._textEditor.updateCursor()
+        #Get the cursor
+        cursor = self._textEditor.getCursor()
+        cursor.update()
+
         #Check for normal input
         if self._inputMode == "Normal":
 
@@ -43,17 +47,20 @@ class InputHandler:
                 self.setInputMode("Replace")
             elif c == ord(':'):
                 self.setInputMode("Command")
-
+                
             #Cursor movement
             elif c in [curses.KEY_DOWN, ord('j')]:
-                self._textEditor.cursorDown()
+                cursor.down()
             elif c in [curses.KEY_UP, ord('k')]:
-                self._textEditor.cursorUp()
+                cursor.up()
             elif c in [curses.KEY_RIGHT, ord('l')]:
-                self._textEditor.cursorRight()
+                cursor.right()
             elif c in [curses.KEY_LEFT, ord('h')]:
-                self._textEditor.cursorLeft()
-
+                cursor.left()
+            #elif c == "G":
+                #cursor.toBottom()
+            #elif c == "g":
+                #cursor.toTop()
         elif self._inputMode == "Insert":
             while True:
                 c = self._window._stdscr.getch()
@@ -64,6 +71,11 @@ class InputHandler:
             self.setInputMode("Normal")
 
         elif self._inputMode == "Replace":
+            while True:
+                c = self._window._stdscr.getch()
+                if c == ord('`'):
+                    break;
+
             #return to normal
             self.setInputMode("Normal")
 

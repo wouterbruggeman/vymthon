@@ -31,6 +31,12 @@ class MainWindow:
 
         #Setup other objects
         self._bar.setFilename(self._textEditor.getCurrentFilename())
+
+        #Define colors
+        curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
     
         #Loop curses
         curses.wrapper(self.cursesLoop)
@@ -41,6 +47,7 @@ class MainWindow:
         self._stdscr = curses.initscr()
 
         #Curses settings
+        curses.start_color()
         curses.cbreak()
         self._stdscr.keypad(1)
         curses.noecho()
@@ -89,7 +96,8 @@ class MainWindow:
 
         #Render the bar
         self._bar.draw()
-        self._bar.setLineNumber(self._textEditor.getCursorY())
+        cursor = self._textEditor.getCursor()
+        self._bar.setLineNumber(cursor.getY())
 
         #TODO: is a refresh really needed?
         self._win.refresh()
@@ -112,14 +120,15 @@ class MainWindow:
             self._win.clear()
             self.redrawWindow()
             curses.doupdate()
-    
-    def addText(self, x, y, label):
-        #Set some text at the given position
+   
+    #Print text
+    def addText(self, x, y, label, color = 1):
         try:
-            self._win.addstr(y, x, label)
+            #Set some text at the given position
+            self._win.addstr(y, x, label, curses.color_pair(color))
         except:
             pass
-
+    
     def moveCursor(self, x, y):
             self._win.move(y,x) 
             self._win.refresh()
