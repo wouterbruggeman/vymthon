@@ -7,8 +7,8 @@ class TextEditor(ScreenElement):
     _buffer = Buffer
     _cursor = Cursor
 
-    _drawHeight = 0
     _offsetX = 0
+    _scrolledY = 0
 
     def __init__(self, window, filepath):
         super().__init__(window)
@@ -18,7 +18,7 @@ class TextEditor(ScreenElement):
         lineCount = len(self._buffer.getContent())
         self._offsetX = self.getOffsetX(lineCount) + 1
 
-        self._cursor = Cursor(self._buffer, self._window, self._offsetX)
+        self._cursor = Cursor(self._buffer, self._window, self, self._offsetX)
 
     def getCurrentFilename(self):
         return self._buffer.getFilename()
@@ -26,9 +26,6 @@ class TextEditor(ScreenElement):
     def setInputMode(self, inputMode):
         self._inputMode = inputMode
     
-    def setHeight(self, height):
-        self._drawHeight = height
-
     def getInputMode(self):
         return self._inputMode
 
@@ -41,24 +38,35 @@ class TextEditor(ScreenElement):
         self._buffer = Buffer(filename)
 
     def draw(self):
-        yCounter = 0
+        lineCounter = 0
         for line in self._buffer.getContent():
-            
+            currentY = lineCounter - self._scrolledY
+
             #Make sure we dont draw over other screen elements
-            if yCounter < self._drawHeight:
+            if (currentY > self.getStartY()) and (currentY < self.getEndY()):
                 #Draw the lines
-                self.drawLineNumber(yCounter)
-                #line = str(yCounter) + " | " + line
-                self._window.addText(self._offsetX, yCounter, line)
-                yCounter += 1
+                self.drawLineNumber(lineCounter - self._scrolledY, lineCounter)
+                self._window.addText(self._offsetX, lineCounter - self._scrolledY, line)
+            
+            lineCounter += 1
 
     def getOffsetX(self, y):
          return len(str(y))
     
-    def drawLineNumber(self, y):
+    def drawLineNumber(self, y, lineNumber):
         #Draw the number in color
-        self._window.addText(0, y, str(y), 3)
-
+        self._window.addText(0, y, str(lineNumber), 3)
 
     def getCursor(self):
         return self._cursor
+
+    def scrollUp(self):
+        if self._scrolledY > 0:
+            self._scrolledY -= 1
+
+    def scrollDown(self):
+        if self._scrolledY < len(self._buffer.getContent()):
+            self._scrolledY += 1
+
+    def getScrolledY(self):
+        return self._scrolledY

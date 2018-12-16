@@ -65,7 +65,7 @@ class MainWindow:
         self._bar.setPosition(self._window_height - 2)
 
         #Give the text editor some space
-        self._textEditor.setHeight(self._bar.getPosition())
+        self._textEditor.setSize(0, self._bar.getPosition())
     
     def cursesStop(self):
         #Stop curses
@@ -97,7 +97,7 @@ class MainWindow:
         #Render the bar
         self._bar.draw()
         cursor = self._textEditor.getCursor()
-        self._bar.setLineNumber(cursor.getY())
+        self._bar.setLineNumber(cursor.getBufferY())
 
         #TODO: is a refresh really needed?
         self._win.refresh()
@@ -115,7 +115,7 @@ class MainWindow:
             #Update the bar size
             self._bar.setPosition(self._window_height - 2)
             #Update the editor height
-            self._textEditor.setHeight(self._bar.getPosition())
+            self._textEditor.setSize(0, self._bar.getPosition())
 
             self._win.clear()
             self.redrawWindow()
