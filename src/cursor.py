@@ -70,8 +70,7 @@ class Cursor(ScreenElement):
     def jumpLeft(self):
         #Move the cursor to the left if needed
         if self.getX() > self._buffer.getLengthX(self.getY()):
-            #self.move(self._buffer.getLengthX(self.getY()), self.getBufferY())
-            return
+            self._posX = self._buffer.getLengthX(self.getY())
 
     def update(self):
         self._window.moveCursor(

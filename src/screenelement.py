@@ -9,7 +9,7 @@ class ScreenElement:
     def __init__(self, window):
         self._window = window
     
-    def setSize(self, startY, endY):
+    def setPosition(self, startY, endY):
         self._startY = startY
         self._endY = endY
     

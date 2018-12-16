@@ -60,12 +60,6 @@ class MainWindow:
             self._window_padding,
             self._window_padding
         )
-        
-        #Place bar at some position
-        self._bar.setPosition(self._window_height - 2)
-
-        #Give the text editor some space
-        self._textEditor.setSize(0, self._bar.getPosition())
     
     def cursesStop(self):
         #Stop curses
@@ -100,7 +94,6 @@ class MainWindow:
         self._bar.setLineNumber(cursor.getBufferY())
         self._bar.setProcentY(cursor.getProcentY())
 
-        #TODO: is a refresh really needed?
         self._win.refresh()
     
     def resizeWindow(self):
@@ -114,9 +107,10 @@ class MainWindow:
                 self._window_width - self._window_padding * 2,
             )
             #Update the bar size
-            self._bar.setPosition(self._window_height - 2)
+            self._bar.setPosition(self._window_height - 1, self._window_height)
+
             #Update the editor height
-            self._textEditor.setSize(0, self._bar.getPosition())
+            self._textEditor.setPosition(0, self._bar.getStartY())
 
             self._win.clear()
             self.redrawWindow()
@@ -133,7 +127,6 @@ class MainWindow:
     def moveCursor(self, x, y):
             self._win.move(y,x) 
             self._win.refresh()
-            #curses.setsyx(y,x)
 
     def exit(self):
         self._aborted = True

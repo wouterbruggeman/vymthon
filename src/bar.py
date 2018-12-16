@@ -7,8 +7,6 @@ class Bar(ScreenElement):
     _procentY = 0
     _statusMessage = ""
 
-    _position = 0
-
     def __init__(self, window):
         super().__init__(window)
 
@@ -30,12 +28,6 @@ class Bar(ScreenElement):
     def setProcentY(self, procent):
         self._procentY = procent
 
-    def setPosition(self, y):
-        self._position = y
-
-    def getPosition(self):
-        return self._position
-
     def getContent(self):
         string = "[" + self._inputMode + "]"
         string += "[" + str(self._lineNumber) + "]"
@@ -46,4 +38,4 @@ class Bar(ScreenElement):
         return string
     
     def draw(self):
-        self._window.addText(0, self.getPosition(), self.getContent())
+        self._window.addText(0, self.getStartY(), self.getContent())

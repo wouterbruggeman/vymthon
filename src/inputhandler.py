@@ -80,7 +80,7 @@ class InputHandler:
             self.setInputMode("Normal")
 
         elif self._inputMode == "Command":
-            cmd = self.getStringInput(1, self._bar.getPosition() + 1)
+            cmd = self.getStringInput(1, self._bar.getStartY() + 1)
             self._commandInterpreter.interpret(cmd)
         
             #Return to normal
