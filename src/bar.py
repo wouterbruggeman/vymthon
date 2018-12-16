@@ -4,6 +4,7 @@ class Bar(ScreenElement):
     _filename = ""
     _inputMode = ""
     _lineNumber = 0
+    _procentY = 0
     _statusMessage = ""
 
     _position = 0
@@ -26,6 +27,9 @@ class Bar(ScreenElement):
     def setStatusMessage(self, message):
         self._statusMessage = message
 
+    def setProcentY(self, procent):
+        self._procentY = procent
+
     def setPosition(self, y):
         self._position = y
 
@@ -34,7 +38,8 @@ class Bar(ScreenElement):
 
     def getContent(self):
         string = "[" + self._inputMode + "]"
-        string += "[" + str(self._lineNumber) + "] "
+        string += "[" + str(self._lineNumber) + "]"
+        string += "[" + str(round(self._procentY, 2)) + "%] "
         string += self._filename
         string += "\n"
         string += self._statusMessage

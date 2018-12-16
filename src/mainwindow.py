@@ -98,6 +98,7 @@ class MainWindow:
         self._bar.draw()
         cursor = self._textEditor.getCursor()
         self._bar.setLineNumber(cursor.getBufferY())
+        self._bar.setProcentY(cursor.getProcentY())
 
         #TODO: is a refresh really needed?
         self._win.refresh()

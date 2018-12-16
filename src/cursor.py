@@ -92,3 +92,6 @@ class Cursor(ScreenElement):
 
     def getBufferY(self):
         return self._posY
+
+    def getProcentY(self):
+        return (100 / self._buffer.getLengthY()) * self.getBufferY()
