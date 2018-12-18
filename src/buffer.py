@@ -27,16 +27,16 @@ class Buffer:
 
     def insertInLine(self, lineNumber, index, string):
         #Split the line
-        line = self._buffer[lineNumber].split()
+        lineList = list(self._buffer[lineNumber])
 
         #Insert in the line _buffer
-        line.insert(index, string)
+        lineList.insert(index, string)
 
         #Join the string
-        line = join(line)
+        lineStr = ''.join(map(str, lineList))
             
         #Write the string back to the buffer
-        self._buffer[lineNumber] = line
+        self._buffer[lineNumber] = lineStr
     
     #Other functions
     def getArrayOfLines(self):
@@ -53,3 +53,7 @@ class Buffer:
 
     def getLengthX(self, y):
         return len(self._buffer[y])
+
+    def saveToFile(self):
+        #TODO: implement this feature
+        return

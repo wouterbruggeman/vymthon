@@ -1,5 +1,5 @@
 from bar import *
-from texteditor import *
+from texteditor import * 
 from commandinterpreter import *
 from cursor import *
 
@@ -66,6 +66,10 @@ class InputHandler:
                 c = self._window._stdscr.getch()
                 if c == ord('`'):
                     break;
+            
+                #Tmp way to insert text
+                self._textEditor.insertChar(chr(c))
+                self._textEditor.draw()
 
             #return to normal
             self.setInputMode("Normal")

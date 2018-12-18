@@ -69,7 +69,7 @@ class Cursor(ScreenElement):
 
     def jumpLeft(self):
         #Move the cursor to the left if needed
-        if self.getX() > self._buffer.getLengthX(self.getY()):
+        if self.getBufferX() > self._buffer.getLengthX(self.getY()):
             self._posX = self._buffer.getLengthX(self.getY())
 
     def update(self):
@@ -93,4 +93,4 @@ class Cursor(ScreenElement):
         return self._posY
 
     def getProcentY(self):
-        return (100 / self._buffer.getLengthY()) * self.getBufferY()
+        return (100 / self._buffer.getLengthY()) * self.getBufferY() + 1

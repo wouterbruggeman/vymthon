@@ -30,7 +30,7 @@ class TextEditor(ScreenElement):
         return self._inputMode
 
     def saveBuffer(self):
-        #TODO: implement this feature
+        self._buffer.saveToFile()
         return "Written to file: " + self.getCurrentFilename()
 
     def openFile(self, filename):
@@ -70,3 +70,7 @@ class TextEditor(ScreenElement):
 
     def getScrolledY(self):
         return self._scrolledY
+
+    #Insert actions
+    def insertChar(self, char):
+        self._buffer.insertInLine(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
