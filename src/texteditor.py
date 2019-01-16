@@ -52,9 +52,9 @@ class TextEditor(ScreenElement):
             
             lineCounter += 1
 
-    def drawLine(self, linenr):
-        line = self._buffer.getContent()[linenr]
-        self._window.addText(self._offsetX, linenr - self._scrolledY, line)
+    def drawLine(self, lineNumber):
+        line = self._buffer.getContent()[lineNumber]
+        self._window.addText(self._offsetX, lineNumber - self._scrolledY, line)
 
     def getOffsetX(self, y):
          return len(str(y))
@@ -69,12 +69,12 @@ class TextEditor(ScreenElement):
     def scrollUp(self):
         if self._scrolledY > 0:
             self._scrolledY -= 1
-        self.draw();
+            self.draw();
 
     def scrollDown(self):
         if self._scrolledY < len(self._buffer.getContent()):
             self._scrolledY += 1
-        self.draw();
+            self.draw();
 
     def getScrolledY(self):
         return self._scrolledY
@@ -82,7 +82,7 @@ class TextEditor(ScreenElement):
     #Insert actions
     def insertChar(self, char):
         self._buffer.insertInLine(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
-        self.drawLine(self._cursor.getY())
+        self.drawLine(self._cursor.getBufferY())
         self._cursor.right()
 
     def removeChar(self):

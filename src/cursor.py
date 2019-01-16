@@ -14,7 +14,6 @@ class Cursor(ScreenElement):
         self._textEditor = textEditor
         self._offsetX = offsetX
 
-
     #Navigate the cursor through the buffer
     def down(self):
         #Check if the view has to be scrolled down
