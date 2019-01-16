@@ -46,9 +46,13 @@ class TextEditor(ScreenElement):
             if (currentY > self.getStartY()) and (currentY < self.getEndY()):
                 #Draw the lines
                 self.drawLineNumber(lineCounter - self._scrolledY, lineCounter)
-                self._window.addText(self._offsetX, lineCounter - self._scrolledY, line)
+                self._window.addText(self._offsetX, currentY, line)
             
             lineCounter += 1
+
+    def drawLine(self, linenr):
+        line = self._buffer.getContent()[linenr]
+        self._window.addText(self._offsetX, linenr - self._scrolledY, line)
 
     def getOffsetX(self, y):
          return len(str(y))
@@ -74,8 +78,7 @@ class TextEditor(ScreenElement):
     #Insert actions
     def insertChar(self, char):
         self._buffer.insertInLine(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
-        #TODO: Fix bug with addtext (Draw the rest of the line)
-        self._window.addText(self._cursor.getX(), self._cursor.getY(), char)
+        self.drawLine(self._cursor.getY())
         self._cursor.right()
 
     def removeChar(self):

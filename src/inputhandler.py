@@ -65,10 +65,10 @@ class InputHandler:
                 c = self._window._stdscr.getch()
                 if c == ord('`'):
                     break;
-                if c == curses.KEY_BACKSPACE:
-                    self._textEditor.removeChar()
-                if c == curses.KEY_ENTER:
-                    self._textEditor.insertNewline()
+                #if c == curses.KEY_BACKSPACE:
+                    #self._textEditor.removeChar()
+                #if c == curses.KEY_ENTER:
+                    #self._textEditor.insertNewline()
                 else:
                     #Tmp way to insert text
                     self._textEditor.insertChar(chr(c))
