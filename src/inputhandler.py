@@ -39,7 +39,6 @@ class InputHandler:
             #Get char from input
             c = self._window._stdscr.getch()
 
-
             #Mode switching
             if c == ord('i'):
                 self.setInputMode("Insert")
@@ -57,19 +56,24 @@ class InputHandler:
                 cursor.right()
             elif c in [curses.KEY_LEFT, ord('h')]:
                 cursor.left()
-            #elif c == "G":
-                #cursor.toBottom()
-            #elif c == "g":
-                #cursor.toTop()
+            #elif c == ord("G"):
+                #TODO: cursor.moveToBottom()
+            #elif c == ord("g"):
+                #TODO: cursor.moveToTop()
         elif self._inputMode == "Insert":
             while True:
                 c = self._window._stdscr.getch()
                 if c == ord('`'):
                     break;
+                if c == curses.KEY_BACKSPACE:
+                    self._textEditor.removeChar()
+                if c == curses.KEY_ENTER:
+                    self._textEditor.insertNewline()
+                else:
+                    #Tmp way to insert text
+                    self._textEditor.insertChar(chr(c))
+                    
             
-                #Tmp way to insert text
-                self._textEditor.insertChar(chr(c))
-                self._textEditor.draw()
 
             #return to normal
             self.setInputMode("Normal")
@@ -80,6 +84,8 @@ class InputHandler:
                 if c == ord('`'):
                     break;
 
+            #TODO: Replace char
+    
             #return to normal
             self.setInputMode("Normal")
 

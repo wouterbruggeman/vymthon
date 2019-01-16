@@ -75,11 +75,11 @@ class MainWindow:
             if resize == True:
                 self.resizeWindow()
 
-            #Refresh the window 
-            self.redrawWindow()
-
             #Handle keypresses
             self._inputHandler.handleKeyPress();
+
+            #Refresh the window 
+            self.redrawWindow()
 
             if self._aborted:
                 break
@@ -87,12 +87,13 @@ class MainWindow:
     def redrawWindow(self):
         #Render the editor
         self._textEditor.draw()
-
-        #Render the bar
-        self._bar.draw()
+        
+        #Get the cursor to render the bar
         cursor = self._textEditor.getCursor()
+        #Render the bar
         self._bar.setLineNumber(cursor.getBufferY())
         self._bar.setProcentY(cursor.getProcentY())
+        self._bar.draw()
 
         self._win.refresh()
     

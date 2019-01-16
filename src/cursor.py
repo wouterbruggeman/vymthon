@@ -66,11 +66,23 @@ class Cursor(ScreenElement):
         if self.getBufferX() < self._buffer.getLengthX(self.getBufferY()):
             self._posX = self.getBufferX() + 1
             self.update()
+    
+    def moveToTop(self):
+        self._scrolledY = 0
+        self._posY = 0;
+        self.update()
+
+    def moveToBottom(self):
+        #TODO: FIX THIS CODE
+        self._scrolledY = self._buffer.getLengthY() - self._textEditor.getEndY()
+        self._posY = self._textEditor.getEndY()
+        self.update()
 
     def jumpLeft(self):
         #Move the cursor to the left if needed
         if self.getBufferX() > self._buffer.getLengthX(self.getY()):
             self._posX = self._buffer.getLengthX(self.getY())
+            self.update()
 
     def update(self):
         self._window.moveCursor(

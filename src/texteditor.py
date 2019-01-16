@@ -74,3 +74,11 @@ class TextEditor(ScreenElement):
     #Insert actions
     def insertChar(self, char):
         self._buffer.insertInLine(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
+        #TODO: Fix bug with addtext (Draw the rest of the line)
+        self._window.addText(self._cursor.getX(), self._cursor.getY(), char)
+        self._cursor.right()
+
+    def removeChar(self):
+        self._buffer.removeFromLine(self._cursor.getBufferY(), self._cursor.getBufferX());
+        self._cursor.left()
+

@@ -10,7 +10,7 @@ class Buffer:
         file = open(self._filepath, "r");
 
         self._buffer = file.read().split("\n")
-        self.deleteLine(len(self._buffer) - 1);
+        #TODO: CHECK THIS self.deleteLine(len(self._buffer) - 1);
 
         file.close()
 
@@ -31,6 +31,19 @@ class Buffer:
 
         #Insert in the line _buffer
         lineList.insert(index, string)
+
+        #Join the string
+        lineStr = ''.join(map(str, lineList))
+            
+        #Write the string back to the buffer
+        self._buffer[lineNumber] = lineStr
+
+    def removeFromLine(self, lineNumber, index):
+        #Split the line
+        lineList = list(self._buffer[lineNumber])
+
+        #Insert in the line _buffer
+        del lineList[index]
 
         #Join the string
         lineStr = ''.join(map(str, lineList))
