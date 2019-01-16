@@ -31,7 +31,7 @@ class InputHandler:
     def handleKeyPress(self):
         #Get the cursor
         cursor = self._textEditor.getCursor()
-        cursor.update()
+        cursor.draw()
 
         #Check for normal input
         if self._inputMode == "Normal":
@@ -70,10 +70,7 @@ class InputHandler:
                 #if c == curses.KEY_ENTER:
                     #self._textEditor.insertNewline()
                 else:
-                    #Tmp way to insert text
                     self._textEditor.insertChar(chr(c))
-                    
-            
 
             #return to normal
             self.setInputMode("Normal")

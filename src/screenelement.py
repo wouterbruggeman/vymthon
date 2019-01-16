@@ -1,6 +1,7 @@
 from mainwindow import *
+from abc import ABC, abstractmethod
 
-class ScreenElement:
+class ScreenElement(ABC):
     _window = None
     _content = []
     _startY = 0
@@ -18,6 +19,12 @@ class ScreenElement:
 
     def getEndY(self):
         return self._endY
-
+    
+    def emptyArea(self):
+        for y in range(self._window.getHeight()):
+            for x in range(self._window.getWidth()):
+                self._window.addText(x, y, " ")
+    
+    @abstractmethod
     def draw(self):
-        return
+        pass

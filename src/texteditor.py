@@ -38,6 +38,8 @@ class TextEditor(ScreenElement):
         self._buffer = Buffer(filename)
 
     def draw(self):
+        self.emptyArea()
+
         lineCounter = 0
         for line in self._buffer.getContent():
             currentY = lineCounter - self._scrolledY
@@ -67,10 +69,12 @@ class TextEditor(ScreenElement):
     def scrollUp(self):
         if self._scrolledY > 0:
             self._scrolledY -= 1
+        self.draw();
 
     def scrollDown(self):
         if self._scrolledY < len(self._buffer.getContent()):
             self._scrolledY += 1
+        self.draw();
 
     def getScrolledY(self):
         return self._scrolledY

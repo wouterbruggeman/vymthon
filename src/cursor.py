@@ -32,7 +32,7 @@ class Cursor(ScreenElement):
         #Check the cursor can be moved down in the file
         if self.getBufferY() < (self._buffer.getLengthY() - 1):
             self._posY = self.getBufferY() + 1
-            self.update()
+            self.draw()
             self.jumpLeft()
 
     def up(self):
@@ -52,39 +52,40 @@ class Cursor(ScreenElement):
         #Check the cursor can be moved up in the file
         if self.getBufferY() > 0:
             self._posY = self.getBufferY() - 1
-            self.update()
+            self.draw()
             self.jumpLeft()
 
     def left(self):
         #Check the cursor can be moved left in the file
         if self.getBufferX() > 0:
             self._posX = self.getBufferX() - 1
-            self.update()
+            self.draw()
 
     def right(self):
         #Check the cursor can be moved right in the file
         if self.getBufferX() < self._buffer.getLengthX(self.getBufferY()):
             self._posX = self.getBufferX() + 1
-            self.update()
+            self.draw()
     
     def moveToTop(self):
+        #TODO: CHECK THIS CODE
         self._scrolledY = 0
         self._posY = 0;
-        self.update()
+        self.draw()
 
     def moveToBottom(self):
         #TODO: FIX THIS CODE
         self._scrolledY = self._buffer.getLengthY() - self._textEditor.getEndY()
         self._posY = self._textEditor.getEndY()
-        self.update()
+        self.draw()
 
     def jumpLeft(self):
         #Move the cursor to the left if needed
         if self.getBufferX() > self._buffer.getLengthX(self.getY()):
             self._posX = self._buffer.getLengthX(self.getY())
-            self.update()
+            self.draw()
 
-    def update(self):
+    def draw(self):
         self._window.moveCursor(
                 self.getX(),
                 self.getY()

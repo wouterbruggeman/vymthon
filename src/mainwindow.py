@@ -53,13 +53,15 @@ class MainWindow:
         curses.noecho()
 
         #Create the window
-        self.resizeWindow()
         self._win = curses.newwin(
             self._window_height - self._window_padding * 2,
             self._window_width - self._window_padding * 2,
             self._window_padding,
             self._window_padding
         )
+        
+        #Resize the window and draw the screen.
+        self.resizeWindow()
     
     def cursesStop(self):
         #Stop curses
@@ -68,28 +70,33 @@ class MainWindow:
         curses.echo()
         curses.endwin()
     
+    #Start the program
     def cursesLoop(self, stdscr):
+
+        #Draw screen
+        self._textEditor.draw()
+        self.draw()
+
+        #Loop
         while 1:
-            #Resize if needed
-            resize = curses.is_term_resized(self._window_width, self._window_height)
-            if resize == True:
-                self.resizeWindow()
+            #TODO: Resize if needed
+            #resize = curses.is_term_resized(self._window_width, self._window_height)
+            #if resize == True:
+                #self.resizeWindow()
 
             #Handle keypresses
-            self._inputHandler.handleKeyPress();
+            self._inputHandler.handleKeyPress()
 
             #Refresh the window 
-            self.redrawWindow()
+            self.draw()
 
             if self._aborted:
                 break
             
-    def redrawWindow(self):
-        #Render the editor
-        self._textEditor.draw()
-        
+    def draw(self):
         #Get the cursor to render the bar
         cursor = self._textEditor.getCursor()
+
         #Render the bar
         self._bar.setLineNumber(cursor.getBufferY())
         self._bar.setProcentY(cursor.getProcentY())
@@ -113,8 +120,8 @@ class MainWindow:
             #Update the editor height
             self._textEditor.setPosition(0, self._bar.getStartY())
 
-            self._win.clear()
-            self.redrawWindow()
+            #self._win.clear()
+            #self.draw()
             curses.doupdate()
    
     #Print text
@@ -128,6 +135,12 @@ class MainWindow:
     def moveCursor(self, x, y):
             self._win.move(y,x) 
             self._win.refresh()
+
+    def getHeight(self):
+        return self._window_height
+
+    def getWidth(self):
+        return self._window_width
 
     def exit(self):
         self._aborted = True
