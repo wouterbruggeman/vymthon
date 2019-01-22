@@ -34,6 +34,8 @@ class Cursor(ScreenElement):
             self.draw()
             self.jumpLeft()
 
+        #TODO: scroll down or up if needed.
+
     def up(self):
         #Check if the view has to be scrolled up
         if ((self.getY() == self._textEditor.getStartY() + 1) and
@@ -53,6 +55,9 @@ class Cursor(ScreenElement):
             self._posY = self.getBufferY() - 1
             self.draw()
             self.jumpLeft()
+
+        #TODO: scroll down or up if needed.
+
 
     def left(self):
         #Check the cursor can be moved left in the file

@@ -19,8 +19,10 @@ class Buffer:
         if lineNumber < len(self._buffer):
             del self._buffer[lineNumber]
 
-    def insertLine(self, lineNumber, string):
-        self._buffer.insert(lineNumber, string)
+    def insertNewLine(self, lineNumber):
+        #TODO: FIX NEWLINE self._buffer.insert(lineNumber, "NEWLINE")
+        self._buffer.insert(lineNumber, "NEWLINE")
+        pass
 
     def appendLine(self, lineNumber, string):
         self._buffer[lineNumber] += string; 
@@ -39,10 +41,13 @@ class Buffer:
         self._buffer[lineNumber] = lineStr
 
     def removeFromLine(self, lineNumber, index):
+        if index < 0:
+            return
+
         #Split the line
         lineList = list(self._buffer[lineNumber])
 
-        #Insert in the line _buffer
+        #Remove the char
         del lineList[index]
 
         #Join the string

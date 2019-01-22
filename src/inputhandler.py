@@ -33,6 +33,7 @@ class InputHandler:
         cursor = self._textEditor.getCursor()
         cursor.draw()
 
+
         #Check for normal input
         if self._inputMode == "Normal":
 
@@ -65,10 +66,10 @@ class InputHandler:
                 c = self._window._stdscr.getch()
                 if c == ord('`'):
                     break;
-                #if c == curses.KEY_BACKSPACE:
-                    #self._textEditor.removeChar()
-                #if c == curses.KEY_ENTER:
-                    #self._textEditor.insertNewline()
+                if c == curses.KEY_BACKSPACE:
+                    self._textEditor.removeChar()
+                if c == curses.KEY_ENTER:
+                    self._textEditor.insertNewline()
                 else:
                     self._textEditor.insertChar(chr(c))
 
