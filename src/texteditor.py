@@ -97,6 +97,7 @@ class TextEditor(ScreenElement):
         self._cursor.left()
 
     def insertNewline(self):
-        self._buffer.insertNewLine(self._cursor.getBufferY() + 1)
+        self._buffer.insertNewLine(self._cursor.getBufferY(), self._cursor.getBufferX())
         self.draw();
         self._cursor.down()
+        self._cursor.setBufferX(0);

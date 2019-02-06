@@ -10,7 +10,7 @@ class Buffer:
         file = open(self._filepath, "r");
 
         self._buffer = file.read().split("\n")
-        #TODO: CHECK THIS self.deleteLine(len(self._buffer) - 1);
+        self.deleteLine(len(self._buffer) - 1);
 
         file.close()
 
@@ -19,8 +19,26 @@ class Buffer:
         if lineNumber < len(self._buffer):
             del self._buffer[lineNumber]
 
-    def insertNewLine(self, lineNumber):
-        self._buffer.insert(lineNumber, "")
+    def insertNewLine(self, lineNumber, index):
+        #Split the line
+        originalLine = list(self._buffer[lineNumber])
+        currentLine = list()
+        newLine = list()
+
+        #Create a new line
+        self._buffer.insert(lineNumber + 1, "")
+
+        #Add all chars before index to the current line
+        for x in range(0, index):
+            currentLine.append(originalLine[x])
+
+        #Add all chars after index to the next line
+        for x in range(index, len(originalLine)):
+            newLine.append(originalLine[x])
+
+        #Add the lists to the lines
+        self._buffer[lineNumber] = ''.join(currentLine)
+        self._buffer[lineNumber + 1] = ''.join(newLine)
 
     def appendLine(self, lineNumber, string):
         self._buffer[lineNumber] += string; 

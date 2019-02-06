@@ -3,8 +3,6 @@ from texteditor import *
 from commandinterpreter import *
 from cursor import *
 
-
-
 class InputHandler:
     _inputMode = "Normal"
     _bar = Bar
@@ -63,40 +61,36 @@ class InputHandler:
                 #TODO: cursor.moveToBottom()
             #elif c == ord("g"):
                 #TODO: cursor.moveToTop()
+
+
         elif self._inputMode == "Insert":
-            while True:
-                c = self._window._stdscr.getch()
-               
-                #ESCAPE = 27
-                if c == 27:
-                    break
+            #Get char from input
+            c = self._window._stdscr.getch()
+            
+            #ESCAPE = 27
+            if c == 27:
+                self.setInputMode("Normal")
 
-                #BACKSPACE = 8 ascii or curses.KEY_BACKSPACE
-                elif c == curses.KEY_BACKSPACE:
-                    self._textEditor.removeChar()
-                
-                #ENTER = 10 ascii
-                elif c == 10:
-                    self._textEditor.insertNewline()
+            #BACKSPACE = 8 ascii or curses.KEY_BACKSPACE
+            elif c == curses.KEY_BACKSPACE:
+                self._textEditor.removeChar()
+            
+            #ENTER = 10 ascii
+            elif c == 10:
+                self._textEditor.insertNewline()
 
-                #Insert all other characters
-                else:
-                    self._textEditor.insertChar(c)
-                    #self._textEditor.insertChar(chr(c))
-
-            #return to normal
-            self.setInputMode("Normal")
+            #Insert all other characters
+            else:
+                #self._textEditor.insertChar(c)
+                self._textEditor.insertChar(chr(c))
 
         elif self._inputMode == "Replace":
-            while True:
-                c = self._window._stdscr.getch()
-                if c == 27:
-                    break;
+            c = self._window._stdscr.getch()
+            if c == 27:
+                self.setInputMode("Normal")
 
             #TODO: Replace char
-    
-            #return to normal
-            self.setInputMode("Normal")
+
 
         elif self._inputMode == "Command":
             cmd = self.getStringInput(1, self._bar.getStartY() + 1)
@@ -104,6 +98,7 @@ class InputHandler:
         
             #Return to normal
             self.setInputMode("Normal")
+
 
 
     def getStringInput(self, x, y):

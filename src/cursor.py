@@ -111,3 +111,12 @@ class Cursor(ScreenElement):
 
     def getProcentY(self):
         return (100 / self._buffer.getLengthY()) * self.getBufferY() + 1
+
+    #Set the cursor position
+    def setBufferX(self, x):
+        self._posX = x
+        self.draw()
+
+    def setBufferY(self, y):
+        self._posT = y
+        self.draw()
