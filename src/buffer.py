@@ -20,9 +20,7 @@ class Buffer:
             del self._buffer[lineNumber]
 
     def insertNewLine(self, lineNumber):
-        #TODO: FIX NEWLINE self._buffer.insert(lineNumber, "NEWLINE")
-        self._buffer.insert(lineNumber, "NEWLINE")
-        pass
+        self._buffer.insert(lineNumber, "")
 
     def appendLine(self, lineNumber, string):
         self._buffer[lineNumber] += string; 

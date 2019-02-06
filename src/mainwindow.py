@@ -37,7 +37,7 @@ class MainWindow:
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    
+
         #Loop curses
         curses.wrapper(self.cursesLoop)
         self.cursesStop()
@@ -46,9 +46,10 @@ class MainWindow:
         #Init curses
         self._stdscr = curses.initscr()
 
+
         #Curses settings
         curses.start_color()
-        curses.cbreak()
+        curses.raw()
         self._stdscr.keypad(1)
         curses.noecho()
 
