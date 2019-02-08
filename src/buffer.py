@@ -44,6 +44,9 @@ class Buffer:
         self._buffer[lineNumber] += string; 
 
     def insertInLine(self, lineNumber, index, string):
+        if index < 0:
+            return
+
         #Split the line
         lineList = list(self._buffer[lineNumber])
 
@@ -65,6 +68,22 @@ class Buffer:
 
         #Remove the char
         del lineList[index]
+
+        #Join the string
+        lineStr = ''.join(map(str, lineList))
+            
+        #Write the string back to the buffer
+        self._buffer[lineNumber] = lineStr
+
+    def replaceChar(self, lineNumber, index, char):
+        if index < 0:
+            return
+
+        #Split the line
+        lineList = list(self._buffer[lineNumber])
+
+        #Remove the char
+        lineList[index] = char
 
         #Join the string
         lineStr = ''.join(map(str, lineList))

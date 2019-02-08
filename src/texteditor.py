@@ -52,7 +52,7 @@ class TextEditor(ScreenElement):
             
             lineCounter += 1
 
-    def reDrawLine(self, lineNumber):
+    def redrawLine(self, lineNumber):
         #Draw empty line 
         for i in range(self._window.getWidth()):
             self._window.addText(self._offsetX + i, lineNumber - self._scrolledY, " ")
@@ -85,19 +85,25 @@ class TextEditor(ScreenElement):
     def getScrolledY(self):
         return self._scrolledY
 
-    #Insert actions
     def insertChar(self, char):
         self._buffer.insertInLine(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
-        self.reDrawLine(self._cursor.getBufferY())
+        self.redrawLine(self._cursor.getBufferY())
         self._cursor.right()
+    
+    def replaceChar(self, char):
+        self._buffer.replaceChar(self._cursor.getBufferY(), self._cursor.getBufferX(), char)
+        self.redrawLine(self._cursor.getBufferY())
 
     def removeChar(self):
         self._buffer.removeFromLine(self._cursor.getBufferY(), self._cursor.getBufferX() -1)
-        self.reDrawLine(self._cursor.getBufferY())
+        self.redrawLine(self._cursor.getBufferY())
         self._cursor.left()
 
     def insertNewline(self):
+        #Insert the line
         self._buffer.insertNewLine(self._cursor.getBufferY(), self._cursor.getBufferX())
-        self.draw();
+
+        #Move the cursor
         self._cursor.down()
         self._cursor.setBufferX(0);
+        self.draw();

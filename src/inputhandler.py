@@ -81,16 +81,22 @@ class InputHandler:
 
             #Insert all other characters
             else:
-                #self._textEditor.insertChar(c)
                 self._textEditor.insertChar(chr(c))
 
         elif self._inputMode == "Replace":
+            #Get char from input
             c = self._window._stdscr.getch()
+            
+            #ESCAPE = 27
             if c == 27:
                 self.setInputMode("Normal")
 
-            #TODO: Replace char
+            else:
+                #Replace the current char
+                self._textEditor.replaceChar(chr(c))
 
+                #Change input mode back to normal
+                self.setInputMode("Normal")
 
         elif self._inputMode == "Command":
             cmd = self.getStringInput(1, self._bar.getStartY() + 1)
