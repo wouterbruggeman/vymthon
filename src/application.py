@@ -1,12 +1,14 @@
 from window import * 
 from texteditor import *
 from statusbar import * 
+from inputhandler import *
 
 class Application:
     _isRunning = False
     _window = None
     _textEditor = None
-    _statusBar = None 
+    _statusBar = None
+    _inputHandler = None
 
     def __init__(self):
         self._isRunning = True
@@ -15,16 +17,21 @@ class Application:
         self._window = Window()
         self._window.start()
 
+
+        #Create inputhandler
+        self._inputHandler = InputHandler(self._textEditor, self._statusBar, self._window)
+
         #Create textEditor
         self._textEditor = TextEditor(self._window)
 
         #Create bar
-        self._statusBar = StatusBar(self._window, self._textEditor)
+        self._statusBar = StatusBar(self._window, self._textEditor, self._inputHandler)
+
 
         #Position the objects
         self._textEditor.setPosition(0, self._window.getHeight() - 3)
         self._statusBar.setPosition(self._window.getHeight() - 2, self._window.getHeight())
-        
+
     def openFile(self, filePath):
         self._textEditor.openFile(filePath)
     
@@ -36,21 +43,19 @@ class Application:
 
     def loop(self):
         #Handle keyboard
-        self.handleKeyboard()
+        self._inputHandler.handleKeyPress()
 
         #Draw application
         self.draw()
 
         #Stop the application after one loop for testing purposes
-        c = self._window.getChar()
-        self.stop()
+        #c = self._window.getChar()
+        #self.stop()
 
-    def handleKeyboard(self):
-        pass
-    
     def draw(self):
         self._textEditor.draw()
         self._statusBar.draw()
+        self._window._win.refresh()
 
     def isRunning(self):
         return self._isRunning

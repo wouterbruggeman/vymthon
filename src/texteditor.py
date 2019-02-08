@@ -2,7 +2,6 @@ from screenelement import *
 from buffer import *
 
 class TextEditor(ScreenElement):
-    _inputMode = "Normal"
     _buffers = None
     _buffersScrolledLines = None
     _activeBufferIndex = 0
@@ -15,31 +14,24 @@ class TextEditor(ScreenElement):
     def draw(self):
         self.emptyArea()
             
-
         lineCounter = 0
         for line in self.getCurrentBuffer().getContent():
             currentY = lineCounter - self._buffersScrolledLines[self._activeBufferIndex]
 
             #Make sure we dont draw over other screen elements
-            if (currentY > self.getStartY()) and (currentY < self.getEndY()):
+            if (currentY >= self.getStartY()) and (currentY < self.getEndY()):
 
                 #Draw the lines
-                self.drawLineNumber(lineCounter - self._scrolledY, lineCounter)
-                self._window.addText(self._offsetX, currentY, line)
+                self.drawLineNumber(
+                        lineCounter - self._buffersScrolledLines[self._activeBufferIndex],
+                        lineCounter)
+                self._window.addText(self.getOffsetX(), currentY, line)
             
             lineCounter += 1
-
-        self._window.addText(0, 0, self.getCurrentBuffer().getFilePath())
-        self._window.addText(0, 1, self.getCurrentBuffer().getFileName())
-        self._window.addText(0, 3, str(len(self.getCurrentBuffer().getContent())))
 
     def drawLineNumber(self, y, lineNumber):
         #Draw the linenumber in color
         self._window.addText(0, y, str(lineNumber), 3)
-
-    def getInputMode(self):
-        return self._inputMode
-   
 
    #TODO: Move these functions to the buffer class
     def getLineNumber(self):
@@ -76,3 +68,6 @@ class TextEditor(ScreenElement):
 
     def getCurrentBuffer(self):
         return self._buffers[self._activeBufferIndex]
+
+    def getOffsetX(self):
+        return len(str(self.getCurrentBuffer().getLineCount())) + 1

@@ -66,6 +66,12 @@ class Window:
         except:
             pass
     
+    def getString(self, x, y):
+        curses.echo()
+        string = self._window._win.getstr(y, x).decode("utf-8")
+        curses.noecho()
+        return string
+    
     def getChar(self):
         return self._win.getch()
 
