@@ -1,18 +1,49 @@
+from texteditor import *
+from buffercursor import *
+import os.path
+
 class Buffer:
     _filepath = None
     _buffer = None
+    _cursor = None
+    _scrolledLineCount = 0
 
-    def __init__(self, _filepath):
-        #Save the _filepath
-        self._filepath = _filepath
+    def __init__(self, filepath, textEditor):
+        self._filepath = filepath
+        self._textEditor = textEditor
 
-        #Read file into _buffer
-        file = open(self._filepath, "r");
+        self.openFile(filepath)
+    
+        #Create cursor
+        self._cursor = BufferCursor(self, self._textEditor)
 
-        self._buffer = file.read().split("\n")
-        self.deleteLine(len(self._buffer) - 1);
+    def openFile(self, filepath):
+        
+        if os.path.isfile(filepath):
+            #File exists, read into buffer
+            file = open(filepath, "r");
+            self._buffer = file.read().split("\n")
+            
+            #If there is no content
+            if len(self._buffer) == 0:
+                #Add empty line
+                #self._buffer.insert(0, "")
+                pass
+            else:
+                #Delete last empty line (created for all newline chars)
+                self.deleteLine(len(self._buffer) - 1);
 
+        else:
+            #File does not exists, create new file
+            file = open(filepath, "w");
+
+            #Create empty buffer
+            self._buffer = list()
+            self._buffer.append("")
+
+        #Close file
         file.close()
+
 
     #Buffer edit options
     def deleteLine(self, lineNumber):
@@ -59,7 +90,7 @@ class Buffer:
         #Write the string back to the buffer
         self._buffer[lineNumber] = lineStr
 
-    def removeFromLine(self, lineNumber, index):
+    def backspace(self, lineNumber, index):
         if index < 0:
             return
 
@@ -91,22 +122,25 @@ class Buffer:
         #Write the string back to the buffer
         self._buffer[lineNumber] = lineStr
     
-    #Other functions
-    def getArrayOfLines(self):
-        return self._buffer
+    def getFileName(self):
+        path = self._filepath.split("/")
+        return path[len(path) - 1]
 
-    def getFilename(self):
+    def getFilePath(self):
         return self._filepath
-
-    def getContent(self):
-        return self._buffer
-
-    def getLengthY(self):
-        return len(self._buffer)
-
-    def getLengthX(self, y):
-        return len(self._buffer[y])
-
+    
     def saveToFile(self):
         #TODO: implement this feature
         return
+
+    def getLineCount(self):
+        return len(self._buffer) - 1
+
+    def getScrolledLineCount(self):
+        return self._scrolledLineCount
+
+    def getLetterCount(self, lineNumber):
+        return len(list(self._buffer[lineNumber]))
+
+    def getContent(self):
+        return self._buffer
