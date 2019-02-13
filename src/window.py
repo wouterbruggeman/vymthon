@@ -68,9 +68,14 @@ class Window:
     
     def getString(self, x, y):
         curses.echo()
-        string = self._window._win.getstr(y, x).decode("utf-8")
+        string = self._win.getstr(y, x).decode("utf-8")
         curses.noecho()
         return string
+
+    def clearLine(self, y):
+        for x in range(self.getWidth()):
+            #Fill the area with spaces
+            self.addText(x, y, " ")
     
     def getChar(self):
         return self._win.getch()

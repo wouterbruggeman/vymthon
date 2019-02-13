@@ -4,12 +4,6 @@ from statusbar import *
 from inputhandler import *
 
 class Application:
-    _isRunning = False
-    _window = None
-    _textEditor = None
-    _statusBar = None
-    _inputHandler = None
-
     def __init__(self):
         self._isRunning = True
 
@@ -17,16 +11,15 @@ class Application:
         self._window = Window()
         self._window.start()
 
-
-        #Create inputhandler
-        self._inputHandler = InputHandler(self._textEditor, self._statusBar, self._window)
-
         #Create textEditor
         self._textEditor = TextEditor(self._window)
 
         #Create bar
-        self._statusBar = StatusBar(self._window, self._textEditor, self._inputHandler)
+        self._statusBar = StatusBar(self._window, self._textEditor)
 
+        #Create inputhandler
+        self._inputHandler = InputHandler(self._textEditor, self._statusBar, self._window)
+        self._statusBar.setInputHandler(self._inputHandler)
 
         #Position the objects
         self._textEditor.setPosition(0, self._window.getHeight() - 3)
@@ -34,7 +27,7 @@ class Application:
 
     def openFile(self, filePath):
         self._textEditor.openFile(filePath)
-    
+
     def stop(self):
         self._isRunning = False
 

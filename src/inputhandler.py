@@ -4,16 +4,13 @@ from statusbar import *
 from window import *
 
 class InputHandler:
-    _inputMode = "Normal"
-    _textEditor = None 
-    _statusBar = None 
-    _window = None
-    #_commandInterpreter = CommandInterpreter
 
     def __init__(self, textEditor, statusBar, window):
         self._textEditor = textEditor
         self._statusBar = statusBar
         self._window = window
+        
+        self._inputMode = "Normal"
 
         #self._commandInterpreter = CommandInterpreter(self._bar, self._textEditor, window)
 
@@ -89,8 +86,10 @@ class InputHandler:
                 self.setInputMode("Normal")
 
         elif self._inputMode == "Command":
+            self._window.addText(0, self._statusBar.getStartY() + 1, ":")
             cmd = self._window.getString(1, self._statusBar.getStartY() + 1)
             #self._commandInterpreter.interpret(cmd)
+            self._window.clearLine(self._statusBar.getStartY() + 1)
         
             #Return to normal
             self.setInputMode("Normal")

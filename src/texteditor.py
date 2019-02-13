@@ -2,14 +2,12 @@ from screenelement import *
 from buffer import *
 
 class TextEditor(ScreenElement):
-    _buffers = None
-    _buffersScrolledLines = None
-    _activeBufferIndex = 0
 
     def __init__(self, window):
         super().__init__(window)
         self._buffers = list()
         self._buffersScrolledLines = list()
+        self._activeBufferIndex = 0
        
     def draw(self):
         self.emptyArea()

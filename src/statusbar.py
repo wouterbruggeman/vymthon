@@ -3,14 +3,13 @@ from texteditor import *
 from inputhandler import *
 
 class StatusBar(ScreenElement):
-    _textEditor = None
-    _inputHandler = None
-    _statusMessage = ""
-    
     #Initialize the statusbar with a window and a texteditor object
-    def __init__(self, window, textEditor, inputHandler):
+    def __init__(self, window, textEditor):
         super().__init__(window)
         self._textEditor = textEditor
+        self._statusMessage = ""
+
+    def setInputHandler(self, inputHandler):
         self._inputHandler = inputHandler
     
     def setStatusMessage(self, message):
