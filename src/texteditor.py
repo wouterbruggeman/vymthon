@@ -16,7 +16,7 @@ class TextEditor(ScreenElement):
         self.emptyArea()
             
         lineCounter = 0
-        for line in self.getCurrentBuffer().getContent():
+        for line in self.getBuffer().getContent():
             currentY = lineCounter - self._scrolledLines[self._activeBufferIndex]
 
             #Make sure we dont draw over other screen elements
@@ -29,8 +29,6 @@ class TextEditor(ScreenElement):
                 self._window.addText(self.getOffsetX(), currentY, line)
             
             lineCounter += 1
-
-        self.getCursor().draw()
 
     def drawLineNumber(self, y, lineNumber):
         #Draw the linenumber in color
@@ -51,7 +49,6 @@ class TextEditor(ScreenElement):
 
     def openFile(self, filepath):
         #Check if file already exists in buffer
-
         index = 0
         for buf in self._buffers:
             if buf.getFilePath() == filepath:
@@ -61,7 +58,6 @@ class TextEditor(ScreenElement):
 
         #File was not found in buffers list, create new buffer
         self._buffers.append(Buffer(filepath, self))
-        self._scrolledLines.append(0)
         
         #Open new buffer
         self.setActiveBuffer(len(self._buffers) - 1)
@@ -69,20 +65,26 @@ class TextEditor(ScreenElement):
         #Create cursor
         self._cursors.append(Cursor(self.getBuffer(), self, self._window))
 
+        #Append a new item to the scrolled lines list.
+        self._scrolledLines.append(0)
+
     def setActiveBuffer(self, bufferIndex):
         self._activeBufferIndex = bufferIndex
-
-    def getCurrentBuffer(self):
-        return self._buffers[self._activeBufferIndex]
-
-    def getOffsetX(self):
-        return len(str(self.getCurrentBuffer().getLineCount())) + 1
-
-    def getCursor(self):
-        return self._cursors[self._activeBufferIndex]
 
     def getBuffer(self):
         return self._buffers[self._activeBufferIndex]
 
+    def getCursor(self):
+        return self._cursors[self._activeBufferIndex]
+
     def getScrolledLines(self):
         return self._scrolledLines[self._activeBufferIndex]
+
+    def getOffsetX(self):
+        return len(str(self.getBuffer().getLineCount())) + 1
+
+    def scrollUp(self):
+        self._scrolledLines[self._activeBufferIndex] -= 1
+
+    def scrollDown(self):
+        self._scrolledLines[self._activeBufferIndex] += 1

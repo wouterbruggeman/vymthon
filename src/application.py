@@ -30,7 +30,7 @@ class Application:
         #Stop curses
         self._window.stop()
 
-    def loop(self, stdscr):
+    def run(self, stdscr):
         self.draw()
         while True:
             #Handle keyboard
@@ -54,6 +54,7 @@ class Application:
         #Draw the objects
         self._textEditor.draw()
         self._statusBar.draw()
+        self._textEditor.getCursor().draw()
 
         #Draw everything on screen
         self._window.draw()

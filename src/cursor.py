@@ -2,7 +2,6 @@ from buffer import *
 from texteditor import *
 
 class Cursor:
-
     def __init__(self, buffer, textEditor, window):
         self._buffer = buffer 
         self._textEditor = textEditor
@@ -14,10 +13,10 @@ class Cursor:
     def down(self):
         #Check if the view has to be scrolled down
         if ((self.getRealY() == (self._textEditor.getEndY() - 1)) and 
-            (self.getRealY() < self._buffer.getLineCount())):
+            (self._lineNumber < self._buffer.getLineCount())):
 
             #Move the view
-            self._buffer.scrollDown()
+            self._textEditor.scrollDown()
 
         #Check the cursor can be moved down in the file
         if self._lineNumber < (self._buffer.getLineCount()):
@@ -27,13 +26,13 @@ class Cursor:
     def up(self):
         #Check if the view has to be scrolled down
         if ((self.getRealY() == self._textEditor.getStartY()) and
-            (self.getRealY() > self._buffer.getLineCount())):
+            (self._lineNumber > 0)):
 
             #Move the view
-            self._buffer.scrollUp()
+            self._textEditor.scrollUp()
 
-        #Check the cursor can be moved down in the file
-        if self._lineNumber > (self._buffer.getLineCount()):
+        #Check the cursor can be moved up in the file
+        if self._lineNumber > 0:
             self._lineNumber -= 1 
             self.jumpLeftIfNeeded()
 

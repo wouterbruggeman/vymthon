@@ -39,16 +39,17 @@ class InputHandler:
             #Cursor movement
             elif c in [curses.KEY_DOWN, ord('j')]:
                 self._textEditor.getCursor().down()
-            
             elif c in [curses.KEY_UP, ord('k')]:
                 self._textEditor.getCursor().up()
             elif c in [curses.KEY_RIGHT, ord('l')]:
-                cursor.right()
+                pass
             elif c in [curses.KEY_LEFT, ord('h')]:
-                cursor.left()
-            #elif c == ord("G"):
+                pass
+            elif c == ord("G"):
+                pass
                 #TODO: cursor.moveToBottom()
-            #elif c == ord("g"):
+            elif c == ord("g"):
+                pass
                 #TODO: cursor.moveToTop()
 
 

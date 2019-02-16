@@ -33,7 +33,7 @@ class Window:
         curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
 
         self._running = True
-        curses.wrapper(self._application.loop)
+        curses.wrapper(self._application.run)
         self.stop()
 
     def _resizeWindow(self):
@@ -53,7 +53,7 @@ class Window:
 
     def stop(self):
         #Stop curses
-        curses.nocbreak()
+        #curses.nocbreak()
         self._stdscr.keypad(0)
         curses.echo()
         curses.endwin()

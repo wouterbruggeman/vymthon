@@ -128,9 +128,6 @@ class Buffer:
     def getLineCount(self):
         return len(self._buffer) - 1
 
-    def getScrolledLineCount(self):
-        return self._scrolledLineCount
-
     def getLetterCount(self, lineNumber):
         return len(list(self._buffer[lineNumber]))
 
