@@ -36,6 +36,13 @@ class Buffer:
         #Close file
         file.close()
 
+    def saveToFile(self, filepath):
+        file = open(filepath, "w");
+        string = "\n".join(self._buffer)
+        file.write(string)
+        file.close()
+
+        return "Written to file '" + self.getFileName(filepath) + "'."
 
     #Buffer edit options
     def deleteLine(self, lineNumber):
@@ -105,7 +112,7 @@ class Buffer:
         #Split the line
         lineList = list(self._buffer[lineNumber])
 
-        #Remove the char
+        #Replace the char
         lineList[index] = char
 
         #Join the string
@@ -114,17 +121,16 @@ class Buffer:
         #Write the string back to the buffer
         self._buffer[lineNumber] = lineStr
     
-    def getFileName(self):
-        path = self._filepath.split("/")
+    def getFileName(self, filepath = ''):
+        if filepath == '':
+            filepath = self._filepath
+
+        path = filepath.split("/")
         return path[len(path) - 1]
 
     def getFilePath(self):
         return self._filepath
     
-    def saveToFile(self):
-        #TODO: implement this feature
-        return
-
     def getLineCount(self):
         return len(self._buffer) - 1
 
