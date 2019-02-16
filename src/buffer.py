@@ -1,21 +1,13 @@
 from texteditor import *
-from buffercursor import *
 import os.path
 
 class Buffer:
-    _filepath = None
-    _buffer = None
-    _cursor = None
-    _scrolledLineCount = 0
 
     def __init__(self, filepath, textEditor):
         self._filepath = filepath
         self._textEditor = textEditor
 
         self.openFile(filepath)
-    
-        #Create cursor
-        self._cursor = BufferCursor(self, self._textEditor)
 
     def openFile(self, filepath):
         

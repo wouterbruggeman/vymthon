@@ -13,9 +13,11 @@ class StatusBar(ScreenElement):
         self._inputHandler = inputHandler
     
     def setStatusMessage(self, message):
-        _statusMessage = message
+        self._statusMessage = message
+        self.draw()
 
     def draw(self):
+        self.emptyArea()
         content = "[" + self._inputHandler.getInputMode() + "]"
         content += "[" + str(self._textEditor.getLineNumber()) + "]"
         content += "[" + str(round(self._textEditor.getProcentY(), 2)) + "%] "

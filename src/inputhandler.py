@@ -1,18 +1,20 @@
-#from commandinterpreter import *
+from application import *
+from commandinterpreter import *
 from texteditor import *
 from statusbar import *
 from window import *
 
 class InputHandler:
 
-    def __init__(self, textEditor, statusBar, window):
+    def __init__(self, application, textEditor, statusBar, window):
         self._textEditor = textEditor
         self._statusBar = statusBar
         self._window = window
         
         self._inputMode = "Normal"
 
-        #self._commandInterpreter = CommandInterpreter(self._bar, self._textEditor, window)
+        self._commandInterpreter = CommandInterpreter(
+                application, self._statusBar, self._textEditor, window)
 
     def setInputMode(self, inputMode):
         self._inputMode = inputMode
@@ -37,9 +39,10 @@ class InputHandler:
                 
             #Cursor movement
             elif c in [curses.KEY_DOWN, ord('j')]:
-                cursor.down()
+                self._textEditor.getCursor().down()
+            
             elif c in [curses.KEY_UP, ord('k')]:
-                cursor.up()
+                self._textEditor.getCursor().up()
             elif c in [curses.KEY_RIGHT, ord('l')]:
                 cursor.right()
             elif c in [curses.KEY_LEFT, ord('h')]:
@@ -86,10 +89,15 @@ class InputHandler:
                 self.setInputMode("Normal")
 
         elif self._inputMode == "Command":
-            self._window.addText(0, self._statusBar.getStartY() + 1, ":")
+            #Show the ':' char
+            self._statusBar.setStatusMessage(":")
+    
+            #Ask for input and interpret the command
             cmd = self._window.getString(1, self._statusBar.getStartY() + 1)
-            #self._commandInterpreter.interpret(cmd)
-            self._window.clearLine(self._statusBar.getStartY() + 1)
+            self._commandInterpreter.interpret(cmd)
         
-            #Return to normal
+            #Clear the status message 
+            self._statusBar.setStatusMessage("")
+        
+            #Return to normal mode
             self.setInputMode("Normal")
