@@ -82,7 +82,7 @@ class Buffer:
         #Write the string back to the buffer
         self._buffer[lineNumber] = lineStr
 
-    def backspace(self, lineNumber, index):
+    def removeChar(self, lineNumber, index):
         if index < 0:
             return
 

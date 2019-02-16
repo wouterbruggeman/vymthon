@@ -42,16 +42,15 @@ class InputHandler:
             elif c in [curses.KEY_UP, ord('k')]:
                 self._textEditor.getCursor().up()
             elif c in [curses.KEY_RIGHT, ord('l')]:
-                pass
+                self._textEditor.getCursor().right()
             elif c in [curses.KEY_LEFT, ord('h')]:
-                pass
+                self._textEditor.getCursor().left()
             elif c == ord("G"):
                 pass
-                #TODO: cursor.moveToBottom()
+                #TODO:
             elif c == ord("g"):
                 pass
-                #TODO: cursor.moveToTop()
-
+                #TODO:
 
         elif self._inputMode == "Insert":
             #Get char from input

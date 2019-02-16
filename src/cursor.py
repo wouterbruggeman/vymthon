@@ -66,6 +66,12 @@ class Cursor:
 
     def draw(self):
         self._window.moveCursor(self.getRealX(), self.getRealY())
+
+    def setLineNumber(self, lineNumber):
+        self._lineNumber = lineNumber
+
+    def setIndex(self, index):
+        self._index = index
     
     def getProcentY(self):
         return (100 / self._buffer.getLineCount()) * self._lineNumber() + 1
@@ -75,3 +81,9 @@ class Cursor:
     
     def getRealY(self):
         return self._lineNumber - self._textEditor.getScrolledLines()
+
+    def getIndex(self):
+        return self._index
+
+    def getLineNumber(self):
+        return self._lineNumber

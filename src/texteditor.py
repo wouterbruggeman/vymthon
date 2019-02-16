@@ -30,6 +30,17 @@ class TextEditor(ScreenElement):
             
             lineCounter += 1
 
+    def redrawLine(self, lineNumber):
+        #Draw empty line 
+        self._window.clearLine(lineNumber)
+
+        #Draw the line
+        self._window.addText(
+            self.getOffsetX(),
+            lineNumber - self._scrolledLines[self._activeBufferIndex],
+            self.getBuffer().getContent()[lineNumber]
+        )
+
     def drawLineNumber(self, y, lineNumber):
         #Draw the linenumber in color
         self._window.addText(0, y, str(lineNumber), 3)
@@ -66,7 +77,43 @@ class TextEditor(ScreenElement):
         self._cursors.append(Cursor(self.getBuffer(), self, self._window))
 
         #Append a new item to the scrolled lines list.
-        self._scrolledLines.append(0)
+        self._scrolledLines.append(0) 
+
+        
+    def insertChar(self, char):
+        self.getBuffer().insertInLine(
+            self.getCursor().getLineNumber(),
+            self.getCursor().getIndex(),
+            char
+        )
+        self.redrawLine(self.getCursor().getLineNumber())
+        self.getCursor().right()
+    
+    def replaceChar(self, char):
+        self.getBuffer().replaceChar(
+            self.getCursor().getLineNumber(),
+            self.getCursor().getIndex(),
+            char
+        )
+        self.redrawLine(self.getCursor().getLineNumber())
+
+    def backspace(self):
+        self.getBuffer().removeChar(
+            self.getCursor().getLineNumber(),
+            self.getCursor().getIndex() -1
+        )
+        self.redrawLine(self.getCursor().getLineNumber())
+        self.getCursor().left()
+
+    def insertNewline(self):
+        #Insert the line
+        self.getBuffer().insertNewLine(
+            self.getCursor().getLineNumber(),
+            self.getCursor().getIndex())
+
+        #Move the cursor
+        self.getCursor().down()
+        self.getCursor().setIndex(0);
 
     def setActiveBuffer(self, bufferIndex):
         self._activeBufferIndex = bufferIndex
