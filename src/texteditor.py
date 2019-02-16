@@ -45,19 +45,6 @@ class TextEditor(ScreenElement):
         #Draw the linenumber in color
         self._window.addText(0, y, str(lineNumber), 3)
 
-   #TODO: Move these functions to the buffer class
-    def getLineNumber(self):
-        #TODO:
-        return 0
-    
-    def getProcentY(self):
-        #TODO:
-        return 0
-    
-    def getCurrentFilename(self):
-        #TODO:
-        return "Filename"
-
     def openFile(self, filepath):
         #Check if file already exists in buffer
         index = 0

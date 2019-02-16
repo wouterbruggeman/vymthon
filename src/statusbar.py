@@ -19,10 +19,9 @@ class StatusBar(ScreenElement):
     def draw(self):
         self.emptyArea()
         content = "[" + self._inputHandler.getInputMode() + "]"
-        content += "[" + str(self._textEditor.getLineNumber()) + "]"
-        content += "[" + str(round(self._textEditor.getProcentY(), 2)) + "%] "
-        content += self._textEditor.getCurrentFilename()
-        content += "\n"
+        content += "[" + str(self._textEditor.getCursor().getLineNumber()) + "]"
+        content += "[" + str(round(self._textEditor.getCursor().getProcentY(), 2)) + "%] "
+        content += self._textEditor.getBuffer().getFileName()
 
         self._window.addText(0, self.getStartY(), content)
         self._window.addText(0, self.getStartY() + 1, self._statusMessage)

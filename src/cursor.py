@@ -74,7 +74,7 @@ class Cursor:
         self._index = index
     
     def getProcentY(self):
-        return (100 / self._buffer.getLineCount()) * self._lineNumber() + 1
+        return (100 / self._buffer.getLineCount()) * self._lineNumber + 1
 
     def getRealX(self):
         return self._index + self._textEditor.getOffsetX()
