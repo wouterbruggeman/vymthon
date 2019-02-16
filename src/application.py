@@ -16,7 +16,7 @@ class Application:
         self._statusBar = StatusBar(self._window, self._textEditor)
 
         #Create inputhandler
-        self._inputHandler = InputHandler(self, self._textEditor, self._statusBar, self._window)
+        self._inputHandler = InputHandler(self._textEditor, self._statusBar, self._window)
         self._statusBar.setInputHandler(self._inputHandler)
 
         #Position the objects
@@ -33,12 +33,14 @@ class Application:
     def loop(self, stdscr):
         self.draw()
         while True:
-            pass
             #Handle keyboard
             self._inputHandler.handleKeyPress()
 
             #Draw application
             self.draw()
+
+            if self._window.isRunning() == False:
+                break
     
     def resizeObjects(self):
         #Change the position/size of the objects

@@ -32,6 +32,7 @@ class Window:
         curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
 
+        self._running = True
         curses.wrapper(self._application.loop)
         self.stop()
 
@@ -47,6 +48,8 @@ class Window:
             )
             curses.doupdate()
 
+    def exit(self):
+        self._running = False 
 
     def stop(self):
         #Stop curses
@@ -88,4 +91,6 @@ class Window:
 
     def getWidth(self):
         return self._window_width
-
+    
+    def isRunning(self):
+        return self._running

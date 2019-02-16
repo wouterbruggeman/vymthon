@@ -1,4 +1,3 @@
-from application import *
 from commandinterpreter import *
 from texteditor import *
 from statusbar import *
@@ -6,7 +5,7 @@ from window import *
 
 class InputHandler:
 
-    def __init__(self, application, textEditor, statusBar, window):
+    def __init__(self, textEditor, statusBar, window):
         self._textEditor = textEditor
         self._statusBar = statusBar
         self._window = window
@@ -14,7 +13,7 @@ class InputHandler:
         self._inputMode = "Normal"
 
         self._commandInterpreter = CommandInterpreter(
-                application, self._statusBar, self._textEditor, window)
+                self._statusBar, self._textEditor, window)
 
     def setInputMode(self, inputMode):
         self._inputMode = inputMode
