@@ -104,6 +104,13 @@ class Buffer:
             
         #Write the string back to the buffer
         self._buffer[lineNumber] = lineStr
+    
+    def moveLine(self, lineNumber, newLineNumber):
+        self._buffer[newLineNumber] += self._buffer[lineNumber]
+        self.removeLine(lineNumber)
+
+    def removeLine(self, lineNumber):
+        del self._buffer[lineNumber]
 
     def replaceChar(self, lineNumber, index, char):
         if index < 0:

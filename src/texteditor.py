@@ -84,12 +84,30 @@ class TextEditor(ScreenElement):
         self.redrawLine(self.getCursor().getLineNumber())
 
     def backspace(self):
-        self.getBuffer().removeChar(
-            self.getCursor().getLineNumber(),
-            self.getCursor().getIndex() -1
-        )
-        self.redrawLine(self.getCursor().getLineNumber())
-        self.getCursor().left()
+        #Backspace at index 0
+        if self.getCursor().getIndex() == 0:
+            lineNumber = self.getCursor().getLineNumber()
+            if lineNumber != 0:
+                #Get original lettercount
+                letterCount = self.getBuffer().getLetterCount(lineNumber)
+                
+                #Move the line
+                self.getBuffer().moveLine(lineNumber, lineNumber - 1)
+                
+                #Move the cursor
+                self.getCursor().up()
+                self.getCursor().setIndex(
+                    self.getBuffer().getLetterCount(lineNumber - 1) - letterCount
+                )
+
+        #Normal backspace
+        else: 
+            self.getBuffer().removeChar(
+                self.getCursor().getLineNumber(),
+                self.getCursor().getIndex() -1
+            )
+            #self.redrawLine(self.getCursor().getLineNumber())
+            self.getCursor().left()
 
     def insertNewline(self):
         #Insert the line
