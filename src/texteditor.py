@@ -66,7 +66,6 @@ class TextEditor(ScreenElement):
         #Append a new item to the scrolled lines list.
         self._scrolledLines.append(0) 
 
-        
     def insertChar(self, char):
         self.getBuffer().insertInLine(
             self.getCursor().getLineNumber(),
