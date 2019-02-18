@@ -88,15 +88,15 @@ class InputHandler:
                 self.setInputMode("Normal")
 
         elif self._inputMode == "Command":
+            #Clear the line
+            self._window.clearLine(self._statusBar.getStartY() + 1)
+
             #Show the ':' char
             self._statusBar.setStatusMessage(":")
     
             #Ask for input and interpret the command
             cmd = self._window.getString(1, self._statusBar.getStartY() + 1)
             self._commandInterpreter.interpret(cmd)
-        
-            #Clear the status message 
-            self._statusBar.setStatusMessage("")
         
             #Return to normal mode
             self.setInputMode("Normal")

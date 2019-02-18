@@ -18,13 +18,17 @@ class CommandInterpreter:
         if command == "q":
             self._window.exit()
         elif command == "w":
-            if len(arguments) > 0:
-                filepath = arguments[0]
-            else:
-                filepath = self._textEditor.getBuffer().getFilePath()
-
-            self._statusBar.setStatusMessage(self._textEditor.getBuffer().saveToFile(filepath))
-
+            self.commandSave(arguments)
         elif command == "wq":
-            self._textEditor.saveBuffer()
+            self.commandSave(arguments)
             self._window.exit()
+
+    def commandSave(self, arguments):
+        if len(arguments) > 0:
+            filepath = arguments[0]
+        else:
+            filepath = self._textEditor.getBuffer().getFilePath()
+
+        self._statusBar.setStatusMessage(self._textEditor.getBuffer().saveToFile(filepath))
+
+

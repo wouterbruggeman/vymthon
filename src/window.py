@@ -24,7 +24,7 @@ class Window:
         self._win = curses.newwin(1,1)
         
         #Resize the window
-        self._resizeWindow()
+        self.resizeWindow()
 
         #Define colors
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
@@ -36,7 +36,7 @@ class Window:
         curses.wrapper(self._application.run)
         self.stop()
 
-    def _resizeWindow(self):
+    def resizeWindow(self):
         self._window_height, self._window_width = self._stdscr.getmaxyx()
 
         #If the window was not initialized

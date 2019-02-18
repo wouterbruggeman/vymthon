@@ -31,10 +31,17 @@ class Application:
         self._window.stop()
 
     def run(self, stdscr):
+        self.resizeObjects()
         self.draw()
         while True:
             #Handle keyboard
             self._inputHandler.handleKeyPress()
+
+            #Resize the window if needed
+            self._window.resizeWindow()
+            
+            #Check if the objects need to be resized
+            self.resizeObjects()
 
             #Draw application
             self.draw()
@@ -48,8 +55,6 @@ class Application:
         self._statusBar.setPosition(self._window.getHeight() - 2, self._window.getHeight())
     
     def draw(self):
-        #Check if the objects need to be resized
-        self.resizeObjects()
 
         #Draw the objects
         self._textEditor.draw()

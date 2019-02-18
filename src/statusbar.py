@@ -13,8 +13,9 @@ class StatusBar(ScreenElement):
         self._inputHandler = inputHandler
     
     def setStatusMessage(self, message):
+        #Show the message directly, without waiting for the draw method to be called
         self._statusMessage = message
-        self.draw()
+        self._window.addText(0, self.getStartY() + 1, self._statusMessage)
 
     def draw(self):
         self.emptyArea()
