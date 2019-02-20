@@ -52,6 +52,15 @@ class InputHandler:
                 pass
                 #TODO:
 
+            #Append to the line
+            elif c == ord("A"):
+                self._textEditor.getCursor().setIndex(
+                    self._textEditor.getBuffer().getLetterCount(
+                        self._textEditor.getCursor().getLineNumber()
+                    )
+                )
+                self.setInputMode("Insert")
+
         elif self._inputMode == "Insert":
             #Get char from input
             c = self._window._stdscr.getch()
@@ -67,6 +76,16 @@ class InputHandler:
             #ENTER = 10 ascii
             elif c == 10:
                 self._textEditor.insertNewline()
+            
+            #Movement
+            elif c == curses.KEY_DOWN:
+                self._textEditor.getCursor().down()
+            elif c == curses.KEY_UP:
+                self._textEditor.getCursor().up()
+            elif c == curses.KEY_RIGHT:
+                self._textEditor.getCursor().right()
+            elif c == curses.KEY_LEFT:
+                self._textEditor.getCursor().left()
 
             #Insert all other characters
             else:
@@ -79,6 +98,16 @@ class InputHandler:
             #ESCAPE = 27
             if c == 27:
                 self.setInputMode("Normal")
+
+            #Movement
+            elif c == curses.KEY_DOWN:
+                self._textEditor.getCursor().down()
+            elif c == curses.KEY_UP:
+                self._textEditor.getCursor().up()
+            elif c == curses.KEY_RIGHT:
+                self._textEditor.getCursor().right()
+            elif c == curses.KEY_LEFT:
+                self._textEditor.getCursor().left()
 
             else:
                 #Replace the current char
