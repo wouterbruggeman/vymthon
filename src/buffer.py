@@ -19,11 +19,7 @@ class Buffer:
             #If there is no content
             if len(self._buffer) == 0:
                 #Add empty line
-                #self._buffer.insert(0, "")
-                pass
-            else:
-                #Delete last empty line (created for all newline chars)
-                self.deleteLine(len(self._buffer) - 1);
+                self._buffer.insert(0, "")
 
         else:
             #File does not exists, create new file
