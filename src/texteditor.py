@@ -15,20 +15,20 @@ class TextEditor(ScreenElement):
     def draw(self):
         self.emptyArea()
             
-        lineCounter = 0
-        for line in self.getBuffer().getContent():
-            currentY = lineCounter - self._scrolledLines[self._activeBufferIndex]
+        for y in range(self.getStartY(), self.getEndY()):
+            lineIndex = self.getScrolledLines() + y
 
-            #Make sure we dont draw over other screen elements
-            if (currentY >= self.getStartY()) and (currentY < self.getEndY()):
+            #If out of range
+            if lineIndex >= len(self.getBuffer().getContent()): 
+                return
 
-                #Draw the lines
-                self.drawLineNumber(
-                        lineCounter - self._scrolledLines[self._activeBufferIndex],
-                        lineCounter)
-                self._window.addText(self.getOffsetX(), currentY, line)
+            #If not out of range, get the line to draw
+            line = self.getBuffer().getContent()[lineIndex]
             
-            lineCounter += 1
+            #Draw the linenumber
+            self.drawLineNumber(y, lineIndex)
+            #Draw the text
+            self._window.addText(self.getOffsetX(), y, line)
 
     def redrawLine(self, lineNumber):
         #Draw empty line 

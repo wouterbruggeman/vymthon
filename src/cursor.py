@@ -45,18 +45,6 @@ class Cursor:
         #Check the cursor can be moved right in the file
         if self._index < self._buffer.getLetterCount(self._lineNumber):
             self._index += 1
-    
-    #def moveToTop(self):
-        #TODO: CHECK THIS CODE
-    #    self._scrolledY = 0
-    #    self._posY = 0;
-    #    self.draw()
-
-    #def moveToBottom(self):
-        #TODO: FIX THIS CODE
-    #    self._scrolledY = self._buffer.getLengthY() - self._textEditor.getEndY()
-    #    self._posY = self._textEditor.getEndY()
-    #    self.draw()
 
     def jumpLeftIfNeeded(self):
         #Move the cursor to the left if needed

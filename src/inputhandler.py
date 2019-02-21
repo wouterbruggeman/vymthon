@@ -45,12 +45,6 @@ class InputHandler:
                 self._textEditor.getCursor().right()
             elif c in [curses.KEY_LEFT, ord('h')]:
                 self._textEditor.getCursor().left()
-            elif c == ord("G"):
-                pass
-                #TODO:
-            elif c == ord("g"):
-                pass
-                #TODO:
 
             #Append to the line
             elif c == ord("A"):
