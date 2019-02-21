@@ -22,22 +22,16 @@ class TextEditor(ScreenElement):
             if lineIndex >= len(self.getBuffer().getContent()): 
                 return
 
-            #If not out of range, get the line to draw
-            line = self.getBuffer().getContent()[lineIndex]
-            
-            #Draw the linenumber
-            self.drawLineNumber(y, lineIndex)
-            #Draw the text
-            self._window.addText(self.getOffsetX(), y, line)
+            self.drawLine(y, lineIndex)
 
-    def redrawLine(self, lineNumber):
-        #Draw empty line 
-        self._window.clearLine(lineNumber)
+    def drawLine(self, y, lineNumber):
+        #Draw the linenumber
+        self.drawLineNumber(y, lineNumber)
 
         #Draw the line
         self._window.addText(
             self.getOffsetX(),
-            lineNumber - self._scrolledLines[self._activeBufferIndex],
+            y,
             self.getBuffer().getContent()[lineNumber]
         )
 
