@@ -24,6 +24,10 @@ class TextEditor(ScreenElement):
 
             self.drawLine(y, lineIndex)
 
+    def redrawLine(self, lineNumber):
+        self.drawLine(lineNumber - self.getScrolledLines(), lineNumber)
+        self.drawLineNumber(lineNumber - self.getScrolledLines(), lineNumber)
+
     def drawLine(self, y, lineNumber):
         #Draw the linenumber
         self.drawLineNumber(y, lineNumber)
