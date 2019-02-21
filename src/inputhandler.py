@@ -54,12 +54,19 @@ class InputHandler:
 
             #Append to the line
             elif c == ord("A"):
-                self._textEditor.getCursor().setIndex(
-                    self._textEditor.getBuffer().getLetterCount(
-                        self._textEditor.getCursor().getLineNumber()
-                    )
-                )
-                self.setInputMode("Insert")
+                self.append()
+
+            #Insert at the beginning of the line
+            elif c == ord("I"):
+                self.insertBeginning()
+
+            #Next word
+            elif c == ord("w"):
+                self.nextWord()
+
+            #Previous word
+            elif c == ord("b"):
+                self.previousWord()
 
         elif self._inputMode == "Insert":
             #Get char from input
@@ -129,3 +136,41 @@ class InputHandler:
         
             #Return to normal mode
             self.setInputMode("Normal")
+    
+    def append(self):
+        cursor = self._textEditor.getCursor()
+        buff = self._textEditor.getBuffer()
+
+        cursor.setIndex(
+            buff.getLetterCount(
+                cursor.getLineNumber(),
+            )
+        )
+        self.setInputMode("Insert")
+
+    def insertBeginning(self):
+        self._textEditor.getCursor().setIndex(0)
+        self.setInputMode("Insert")
+
+
+    def nextWord(self):
+        cursor = self._textEditor.getCursor()
+        buff = self._textEditor.getBuffer()
+
+        cursor.setIndex(
+            buff.getNextWordIndex(
+                cursor.getLineNumber(),
+                cursor.getIndex() 
+            )
+        )
+
+    def previousWord(self):
+        cursor = self._textEditor.getCursor()
+        buff = self._textEditor.getBuffer()
+
+        cursor.setIndex(
+            buff.getPreviousWordIndex(
+                cursor.getLineNumber(),
+                cursor.getIndex() 
+            )
+        )

@@ -146,3 +146,25 @@ class Buffer:
 
     def getContent(self):
         return self._buffer
+
+    def getNextWordIndex(self, lineNumber, index):
+        #Split the line
+        lineList = list(self._buffer[lineNumber])
+        
+        for i in range(index, self.getLetterCount(lineNumber)):
+            #Search for the next word
+            if lineList[i] in [".", ",", "=", " "] and i < self.getLetterCount(lineNumber):
+                    return i+1
+
+        return index
+        
+    def getPreviousWordIndex(self, lineNumber, index):
+        #Split the line
+        lineList = list(self._buffer[lineNumber])
+        
+        for i in range(index, 0, -1):
+            #Search for the previous word
+            if lineList[i] in [".", ",", "=", " "] and i > 0: 
+                    return i-1
+
+        return index
